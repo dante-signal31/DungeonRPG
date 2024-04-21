@@ -1,31 +1,36 @@
 using Godot;
 using System;
 
-public partial class PlayerMoveState : Node
+public partial class PlayerMoveState : PlayerState
 {
-    private Player _characterNode;
+    [Export] private float _speed = 5.0f;
     
-
-    public override void _Ready()
-    {
-        _characterNode = GetOwner<Player>();
-    }
     
     public override void _PhysicsProcess(double delta)
     {
         if (_characterNode.Direction == Vector2.Zero)
         {
             _characterNode.StateMachine.SwitchState<PlayerIdleState>();
+            return;
+        }
+        
+        _characterNode.Velocity = new Vector3(_characterNode.Direction.X, 
+            0, _characterNode.Direction.Y);
+        _characterNode.Velocity *= _speed;
+        _characterNode.MoveAndSlide();
+        _characterNode.Flip();
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionJustPressed(GameConstants.INPUT_DASH))
+        {
+            _characterNode.StateMachine.SwitchState<PlayerDashState>();
         }
     }
-    
-    public override void _Notification(int what)
+
+    protected override void EnterState()
     {
-        base._Notification(what);
-        
-        if (what == 5001)
-        {
-            _characterNode.AnimationPlayer.Play(GameConstants.ANIM_MOVE);
-        }
+        _characterNode.AnimationPlayer.Play(GameConstants.ANIM_MOVE);
     }
 }

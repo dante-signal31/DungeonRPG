@@ -3,19 +3,19 @@ using System;
 
 public partial class StateMachine : Node
 {
-    [Export] private Node _currentState;
-    [Export] private Node[] _states;
+    [Export] private PlayerState _currentState;
+    [Export] private PlayerState[] _states;
     
     public override void _Ready()
     {
-        _currentState.Notification(5001);
+        _currentState.Notify(5001);
     }
     
     public void SwitchState<T>()
     {
-        Node newState = null;
+        PlayerState newState = null;
 
-        foreach (Node state in _states)
+        foreach (PlayerState state in _states)
         {
             if (state is T)
             {
@@ -26,7 +26,11 @@ public partial class StateMachine : Node
 
         if (newState == null) return;
 
+        // Disable current state because we are going to switch to another one.
+        _currentState.Notify(5002);
+        // Switch to another state.
         _currentState = newState;
-        _currentState.Notification(5001);
+        // Enable new current state.
+        _currentState.Notify(5001);
     }
 }

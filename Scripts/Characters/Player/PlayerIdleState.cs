@@ -1,15 +1,8 @@
 using Godot;
 using System;
 
-public partial class PlayerIdleState : Node
+public partial class PlayerIdleState : PlayerState
 {
-    private Player _characterNode;
-    
-    public override void _Ready()
-    {
-        _characterNode = GetOwner<Player>();
-    }
-
     public override void _PhysicsProcess(double delta)
     {
         if (_characterNode.Direction != Vector2.Zero)
@@ -18,13 +11,16 @@ public partial class PlayerIdleState : Node
         }
     }
 
-    public override void _Notification(int what)
+    public override void _Input(InputEvent @event)
     {
-        base._Notification(what);
-
-        if (what == 5001)
+        if (Input.IsActionJustPressed((GameConstants.INPUT_DASH)))
         {
-            _characterNode.AnimationPlayer.Play(GameConstants.ANIM_IDLE);
+            _characterNode.StateMachine.SwitchState<PlayerDashState>();
         }
+    }
+
+    protected override void EnterState()
+    {
+        _characterNode.AnimationPlayer.Play(GameConstants.ANIM_IDLE);
     }
 }

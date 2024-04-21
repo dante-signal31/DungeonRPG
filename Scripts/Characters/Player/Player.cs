@@ -18,9 +18,14 @@ public partial class Player : CharacterBody3D
     /// </summary>
     public StateMachine StateMachine => _stateMachine;
     
+    /// <summary>
+    /// Is this Character facing left?
+    /// </summary>
+    public bool IsFacingLeft { get; private set; }
+    
     public override void _Ready()
     {
-        _stateMachine.SwitchState<PlayerIdleState>();
+        // _stateMachine.SwitchState<PlayerIdleState>();
     }
     
     private Vector2 _direction = Vector2.Zero;
@@ -30,14 +35,6 @@ public partial class Player : CharacterBody3D
     /// </summary>
     public Vector2 Direction => _direction;
 
-    public override void _PhysicsProcess(double delta)
-    {
-        Velocity = new Vector3(_direction.X, 0, _direction.Y);
-        Velocity *= 5;
-        MoveAndSlide();
-        Flip();
-    }
-
     public override void _Input(InputEvent @event)
     {
         _direction =Input.GetVector(GameConstants.INPUT_MOVE_LEFT,
@@ -46,13 +43,13 @@ public partial class Player : CharacterBody3D
             GameConstants.INPUT_MOVE_BACKWARD);
     }
 
-    private void Flip()
+    public void Flip()
     {
         bool isMovingHorizontally = Velocity.X != 0;
         if (isMovingHorizontally)
         {
-            bool isMovingLeft = _direction.X < 0;
-            _spriteNode.FlipH = isMovingLeft;
+            IsFacingLeft = _direction.X < 0;
+            _spriteNode.FlipH = IsFacingLeft;
         }
     }
 }
