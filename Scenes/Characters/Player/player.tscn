@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=47 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
@@ -100,15 +100,23 @@ _data = {
 "Slide": SubResource("Animation_xnoxm")
 }
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvw7v"]
+radius = 0.479579
+height = 1.39603
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "_spriteNode", "StateMachine")]
+collision_layer = 2
+floor_max_angle = 1.48353
+floor_snap_length = 0.2
 script = ExtResource("1_6euok")
 AnimationPlayer = NodePath("AnimationPlayer")
 _spriteNode = NodePath("Sprite3D")
 StateMachine = NodePath("StateMachine")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("2_40kcw")
+texture = ExtResource("2_lhik7")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -133,3 +141,6 @@ _dashTimerNode = NodePath("Timer")
 [node name="Timer" type="Timer" parent="StateMachine/DashState"]
 wait_time = 0.4
 one_shot = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_lvw7v")
