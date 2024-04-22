@@ -100,11 +100,11 @@ _data = {
 "Slide": SubResource("Animation_xnoxm")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("_animPlayerNode", "_spriteNode", "_stateMachine")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "_spriteNode", "StateMachine")]
 script = ExtResource("1_6euok")
-_animPlayerNode = NodePath("AnimationPlayer")
+AnimationPlayer = NodePath("AnimationPlayer")
 _spriteNode = NodePath("Sprite3D")
-_stateMachine = NodePath("StateMachine")
+StateMachine = NodePath("StateMachine")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 texture_filter = 0

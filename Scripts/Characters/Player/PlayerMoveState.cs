@@ -1,9 +1,11 @@
+using DungeonRPG.Scripts.General;
 using Godot;
-using System;
+
+namespace DungeonRPG.Scripts.Characters.Player;
 
 public partial class PlayerMoveState : PlayerState
 {
-    [Export] private float _speed = 5.0f;
+    [Export(PropertyHint.Range, "0,20,0.1")] private float _speed = 5.0f;
     
     
     public override void _PhysicsProcess(double delta)

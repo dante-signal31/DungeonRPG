@@ -1,5 +1,7 @@
+using DungeonRPG.Scripts.General;
 using Godot;
-using System;
+
+namespace DungeonRPG.Scripts.Characters.Player;
 
 public partial class PlayerIdleState : PlayerState
 {

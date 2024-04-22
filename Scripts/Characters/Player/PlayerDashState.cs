@@ -1,9 +1,12 @@
-﻿using Godot;
+﻿using DungeonRPG.Scripts.General;
+using Godot;
+
+namespace DungeonRPG.Scripts.Characters.Player;
 
 public partial class PlayerDashState: PlayerState
 {
     [Export] private Timer _dashTimerNode;
-    [Export] private float _speed = 10.0f;
+    [Export(PropertyHint.Range, "0, 20, 0.1")] private float _speed = 10.0f;
     
     
     public override void _Ready()
@@ -53,7 +56,7 @@ public partial class PlayerDashState: PlayerState
     private void FinishDash()
     {
         _characterNode.Velocity = Vector3.Zero;
-        _characterNode.StateMachine.SwitchState<PlayerIdleState>();
+        _characterNode.StateMachine.SwitchState<DungeonRPG.Scripts.Characters.Player.PlayerIdleState>();
     }
     
     private void _OnDashTimerTimeout()

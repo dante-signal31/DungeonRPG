@@ -1,22 +1,14 @@
+using DungeonRPG.Scripts.General;
 using Godot;
-using System;
+
+namespace DungeonRPG.Scripts.Characters.Player;
 
 public partial class Player : CharacterBody3D
 {
     [ExportGroup("Required Nodes")]
-    [Export] private AnimationPlayer _animPlayerNode;
+    [Export] public AnimationPlayer AnimationPlayer { get; private set; }
     [Export] private Sprite3D _spriteNode;
-    [Export] private StateMachine _stateMachine;
-    
-    /// <summary>
-    /// Animation player for this Character.
-    /// </summary>
-    public AnimationPlayer AnimationPlayer => _animPlayerNode;
-    
-    /// <summary>
-    /// This Character current state machine.
-    /// </summary>
-    public StateMachine StateMachine => _stateMachine;
+    [Export] public StateMachine StateMachine { get; private set; }
     
     /// <summary>
     /// Is this Character facing left?

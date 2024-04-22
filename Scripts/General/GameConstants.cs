@@ -1,4 +1,6 @@
-﻿public class GameConstants
+﻿namespace DungeonRPG.Scripts.General;
+
+public class GameConstants
 {
     // Animation.
     public const string ANIM_IDLE = "Idle";
@@ -11,4 +13,8 @@
     public const string INPUT_MOVE_FORWARD = "MoveForward";
     public const string INPUT_MOVE_BACKWARD = "MoveBackward";
     public const string INPUT_DASH = "Dash";
+    
+    // Notifications.
+    public const int NOTIFICATION_STATE_ENTER = 5001;
+    public const int NOTIFICATION_STATE_EXIT = 5002;
 }

@@ -1,21 +1,23 @@
+using DungeonRPG.Scripts.General;
 using Godot;
-using System;
+
+namespace DungeonRPG.Scripts.Characters;
 
 public partial class StateMachine : Node
 {
-    [Export] private PlayerState _currentState;
-    [Export] private PlayerState[] _states;
+    [Export] private Player.PlayerState _currentState;
+    [Export] private Player.PlayerState[] _states;
     
     public override void _Ready()
     {
-        _currentState.Notify(5001);
+        _currentState.Notify(GameConstants.NOTIFICATION_STATE_ENTER);
     }
     
     public void SwitchState<T>()
     {
-        PlayerState newState = null;
+        Player.PlayerState newState = null;
 
-        foreach (PlayerState state in _states)
+        foreach (Player.PlayerState state in _states)
         {
             if (state is T)
             {
@@ -27,10 +29,10 @@ public partial class StateMachine : Node
         if (newState == null) return;
 
         // Disable current state because we are going to switch to another one.
-        _currentState.Notify(5002);
+        _currentState.Notify(GameConstants.NOTIFICATION_STATE_EXIT);
         // Switch to another state.
         _currentState = newState;
         // Enable new current state.
-        _currentState.Notify(5001);
+        _currentState.Notify(GameConstants.NOTIFICATION_STATE_ENTER);
     }
 }
