@@ -69,12 +69,14 @@ public partial class NavigationAI : Node
     private EnemyStateMachine.EnemyStates _currentState;
     private INavigationBehavior _currentNavigationBehavior;
     private bool _newWaypointNeeded = true;
+    private RandomNumberGenerator _rng;
     
     public override void _EnterTree()
     { 
         _stateMachine.StateChanged += OnStateChanged;
         _timer.Timeout += GetNextPatrolPoint;
         _navigationAgent.WaypointReached += OnWaypointReached;
+        _rng = new RandomNumberGenerator();
     }
 
     public override void _ExitTree()
@@ -86,7 +88,7 @@ public partial class NavigationAI : Node
 
     public override void _Ready()
     {
-        _timer.WaitTime = _characterNode.PatrolWaitingTime;
+        _timer.WaitTime = _rng.RandfRange(0, _characterNode.PatrolWaitingTime);
         _currentState = _stateMachine.CurrentState;
         UpdateNavigationBehavior();
         
@@ -142,6 +144,7 @@ public partial class NavigationAI : Node
         _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Patrol);
         UpdateTargetPosition();
         _timer.Stop();
+        _timer.WaitTime = _rng.RandfRange(0, _characterNode.PatrolWaitingTime);
     }
 
     public void OnWaypointReached(Dictionary _)
