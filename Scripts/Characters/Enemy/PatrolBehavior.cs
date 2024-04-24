@@ -47,7 +47,7 @@ public partial class PatrolBehavior : Node, INavigationBehavior
     {
         Vector3 nextPatrolPoint = PatrolPath.Curve.GetPointPosition(_currentPatrolPointIndex);
         Vector3 nextPatrolPointGlobalSpace = PatrolPath.ToGlobal(nextPatrolPoint);
-        _currentPatrolPointIndex = (_currentPatrolPointIndex) >= _totalPatrolPoints-1 ? 0: _currentPatrolPointIndex+1;
+        _currentPatrolPointIndex = Mathf.Wrap(++_currentPatrolPointIndex, 0, _totalPatrolPoints);
         return nextPatrolPointGlobalSpace;
     }
     
