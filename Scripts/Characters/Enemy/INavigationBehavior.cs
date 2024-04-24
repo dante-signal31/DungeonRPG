@@ -6,4 +6,5 @@ public interface INavigationBehavior
 {
     public float ArrivingRadius { get; set; }
     public Vector3 TargetPosition { get; }
+    public void UpdateTargetPosition();
 }

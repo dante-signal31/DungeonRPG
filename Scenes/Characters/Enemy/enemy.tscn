@@ -342,13 +342,15 @@ _data = [Vector2(0, 0.0240526), 0.0, 4.04861, 0, 0, Vector2(0.226923, 0.646965),
 point_count = 3
 
 [node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode")]
+collision_layer = 4
+collision_mask = 7
 script = ExtResource("1_ncpa3")
 _spriteNode = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("43_ql1eb")
+texture = ExtResource("29_1g1ix")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -364,17 +366,25 @@ tree_root = SubResource("AnimationNodeStateMachine_mwbuk")
 anim_player = NodePath("../AnimationPlayer")
 script = ExtResource("100_2wao8")
 
-[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterBody", "_stateMachine", "_navigationAi", "_agentMover")]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+radius = 2.0
+debug_enabled = true
+
+[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterBody", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent")]
 script = ExtResource("102_s3qvr")
 _characterBody = NodePath("..")
 _stateMachine = NodePath("../StateMachine")
 _navigationAi = NodePath("Navigation")
 _agentMover = NodePath("Movement")
+_navigationAgent = NodePath("../NavigationAgent3D")
 _arrivingRadius = 0.3
 
-[node name="Navigation" type="Node" parent="AI" node_paths=PackedStringArray("_stateMachine", "_patrolBehavior", "_pursuitBehavior")]
+[node name="Navigation" type="Node" parent="AI" node_paths=PackedStringArray("_characterBody", "_stateMachine", "_navigationAgent", "_patrolBehavior", "_pursuitBehavior")]
 script = ExtResource("102_r8ntr")
+_characterBody = NodePath("../..")
 _stateMachine = NodePath("../../StateMachine")
+_navigationAgent = NodePath("../../NavigationAgent3D")
 _patrolBehavior = NodePath("Patrol")
 _pursuitBehavior = NodePath("Pursuit")
 

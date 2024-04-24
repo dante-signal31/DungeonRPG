@@ -10,6 +10,7 @@ public partial class EnemyAIManager : Node
     [Export] private EnemyStateMachine _stateMachine;
     [Export] private NavigationAI _navigationAi;
     [Export] private AgentMover _agentMover;
+    [Export] private NavigationAgent3D _navigationAgent;
     
     [ExportCategory("CONFIGURATION:")]
     [Export] private float _arrivingRadius;
@@ -18,6 +19,7 @@ public partial class EnemyAIManager : Node
     {
         _agentMover.ArrivingRadius = _arrivingRadius;
         _navigationAi.ArrivingRadius = _arrivingRadius;
+        _navigationAgent.TargetDesiredDistance = _arrivingRadius;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -25,7 +27,7 @@ public partial class EnemyAIManager : Node
         switch (_stateMachine.CurrentState)
         {
             case EnemyStateMachine.EnemyStates.Patrol:
-                _agentMover.TargetPosition = _navigationAi.TargetPosition;
+                _agentMover.TargetPosition = _navigationAi.NextPositionToReachTarget;
                 break;
             case EnemyStateMachine.EnemyStates.Idle:
                 break;

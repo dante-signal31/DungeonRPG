@@ -33,7 +33,8 @@ public partial class PatrolBehavior : Node, INavigationBehavior
     {
         _totalPatrolPoints = PatrolPath.Curve.PointCount;
         _characterNode = GetOwner<Node3D>();
-        _currentTargetPosition = GetNextPatrolPoint();
+        // _currentTargetPosition = GetNextPatrolPoint();
+        // UpdateTargetPosition();
     }
 
     /// <summary>
@@ -62,12 +63,21 @@ public partial class PatrolBehavior : Node, INavigationBehavior
         return currentPatrolPointGlobalSpace;
     }
 
-    public override void _PhysicsProcess(double _)
+    /// <summary>
+    /// Update target position with the next point in patrol path.
+    /// </summary>
+    public void UpdateTargetPosition()
     {
-        if (_characterNode.GlobalPosition.DistanceTo(_currentTargetPosition)<=ArrivingRadius)
-        {
-            _currentTargetPosition = GetNextPatrolPoint();
-            EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
-        }
+        _currentTargetPosition = GetNextPatrolPoint();
+        EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
     }
+    
+    // public override void _PhysicsProcess(double _)
+    // {
+    //     if (_characterNode.GlobalPosition.DistanceTo(_currentTargetPosition)<=ArrivingRadius)
+    //     {
+    //         _currentTargetPosition = GetNextPatrolPoint();
+    //         EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
+    //     }
+    // }
 }
