@@ -69,7 +69,7 @@ public partial class PatrolBehavior : Node, INavigationBehavior
     public void UpdateTargetPosition()
     {
         _currentTargetPosition = GetNextPatrolPoint();
-        EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
+        // EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
     }
     
     // public override void _PhysicsProcess(double _)

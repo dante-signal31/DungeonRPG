@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 
 namespace DungeonRPG.Scripts.Characters.Enemy;
 
@@ -44,7 +45,7 @@ public partial class NavigationAI : Node
             if (_nextPositionToReachTarget != value)
             {
                 _nextPositionToReachTarget = value;
-                EmitSignal(SignalName.TargetPositionChanged, _nextPositionToReachTarget);
+                // EmitSignal(SignalName.TargetPositionChanged, _nextPositionToReachTarget);
             }            
         }
     }
@@ -67,18 +68,20 @@ public partial class NavigationAI : Node
 
     private EnemyStateMachine.EnemyStates _currentState;
     private INavigationBehavior _currentNavigationBehavior;
-    private bool _initialSynchronizationDone = false;
+    private bool _newWaypointNeeded = true;
     
     public override void _EnterTree()
     { 
         _stateMachine.StateChanged += OnStateChanged;
         _timer.Timeout += GetNextPatrolPoint;
+        _navigationAgent.WaypointReached += OnWaypointReached;
     }
 
     public override void _ExitTree()
     {
         _stateMachine.StateChanged -= OnStateChanged;
         _timer.Timeout -= GetNextPatrolPoint;
+        _navigationAgent.WaypointReached -= OnWaypointReached;
     }
 
     public override void _Ready()
@@ -141,6 +144,13 @@ public partial class NavigationAI : Node
         _timer.Stop();
     }
 
+    public void OnWaypointReached(Dictionary _)
+    {
+        // Don't call _navigationAgent.GetNextPathPosition() from here or you will
+        // end in an endless loop.
+        _newWaypointNeeded = true;
+    }
+
     public override void _PhysicsProcess(double _)
     {
         if (_navigationAgent.IsNavigationFinished())
@@ -151,9 +161,10 @@ public partial class NavigationAI : Node
                 _timer.Start();
             }
         }
-        else
+        else if (_newWaypointNeeded)
         {
             NextPositionToReachTarget = _navigationAgent.GetNextPathPosition();
+            _newWaypointNeeded = false;
         }
     }
 }
