@@ -15,11 +15,6 @@ public partial class Player : CharacterBody3D
     /// </summary>
     public bool IsFacingLeft { get; private set; }
     
-    public override void _Ready()
-    {
-        // _stateMachine.SwitchState<PlayerIdleState>();
-    }
-    
     private Vector2 _direction = Vector2.Zero;
     
     /// <summary>

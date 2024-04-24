@@ -341,8 +341,9 @@ point_count = 3
 _data = [Vector2(0, 0.0240526), 0.0, 4.04861, 0, 0, Vector2(0.226923, 0.646965), 1.42483, 1.42483, 0, 0, Vector2(0.992857, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[node name="Enemy" type="CharacterBody3D"]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode")]
 script = ExtResource("1_ncpa3")
+_spriteNode = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
