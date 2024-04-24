@@ -20,6 +20,7 @@ public partial class Enemy : CharacterBody3D
         }
     }
     [Export] private Path3D _patrolPath;
+    [Export] private float _patrolWaitingTime = 2.0f;
     
     /// <summary>
     /// Is this Character facing left?
@@ -30,6 +31,11 @@ public partial class Enemy : CharacterBody3D
     private PatrolBehavior _patrolBehavior;
     
     public Vector3 Forward { get; private set; } = Vector3.Right;
+    
+    /// <summary>
+    /// Time to wait idle before moving again after reaching a patrol checkpoint.
+    /// </summary>
+    public float PatrolWaitingTime => _patrolWaitingTime;
     
     public override void _EnterTree()
     {

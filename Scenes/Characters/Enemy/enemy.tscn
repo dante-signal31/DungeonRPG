@@ -350,7 +350,7 @@ _spriteNode = NodePath("Sprite3D")
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("29_1g1ix")
+texture = ExtResource("46_rhs1c")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -368,7 +368,7 @@ script = ExtResource("100_2wao8")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
-radius = 2.0
+radius = 1.0
 debug_enabled = true
 
 [node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterBody", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent")]
@@ -380,19 +380,22 @@ _agentMover = NodePath("Movement")
 _navigationAgent = NodePath("../NavigationAgent3D")
 _arrivingRadius = 0.3
 
-[node name="Navigation" type="Node" parent="AI" node_paths=PackedStringArray("_characterBody", "_stateMachine", "_navigationAgent", "_patrolBehavior", "_pursuitBehavior")]
+[node name="Navigation" type="Node" parent="AI" node_paths=PackedStringArray("_stateMachine", "_navigationAgent", "_patrolBehavior", "_pursuitBehavior", "_characterNode", "_timer")]
 script = ExtResource("102_r8ntr")
-_characterBody = NodePath("../..")
 _stateMachine = NodePath("../../StateMachine")
 _navigationAgent = NodePath("../../NavigationAgent3D")
 _patrolBehavior = NodePath("Patrol")
 _pursuitBehavior = NodePath("Pursuit")
+_characterNode = NodePath("../..")
+_timer = NodePath("Timer")
 
 [node name="Patrol" type="Node" parent="AI/Navigation"]
 script = ExtResource("102_5piw0")
 
 [node name="Pursuit" type="Node" parent="AI/Navigation"]
 script = ExtResource("104_sigy7")
+
+[node name="Timer" type="Timer" parent="AI/Navigation"]
 
 [node name="Movement" type="Node" parent="AI" node_paths=PackedStringArray("_steeringBehavior", "_characterBody", "_stateMachine")]
 script = ExtResource("105_stnod")

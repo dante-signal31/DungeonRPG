@@ -14,6 +14,8 @@ public partial class NavigationAI : Node
     [Export] private NavigationAgent3D _navigationAgent;
     [Export] private PatrolBehavior _patrolBehavior;
     [Export] private PursuitBehavior _pursuitBehavior;
+    [Export] private Enemy _characterNode;
+    [Export] private Timer _timer;
 
     private Vector3 _finalTargetPosition;
     /// <summary>
@@ -70,15 +72,18 @@ public partial class NavigationAI : Node
     public override void _EnterTree()
     { 
         _stateMachine.StateChanged += OnStateChanged;
+        _timer.Timeout += GetNextPatrolPoint;
     }
 
     public override void _ExitTree()
     {
         _stateMachine.StateChanged -= OnStateChanged;
+        _timer.Timeout -= GetNextPatrolPoint;
     }
 
     public override void _Ready()
     {
+        _timer.WaitTime = _characterNode.PatrolWaitingTime;
         _currentState = _stateMachine.CurrentState;
         UpdateNavigationBehavior();
         
@@ -125,11 +130,26 @@ public partial class NavigationAI : Node
         UpdateTargetPosition();
     }
 
+    /// <summary>
+    /// This method is called by the timer after waiting in a patrol path waypoint. It returns
+    /// next waypoint and resumes patrolling. This way the enemy waits a moment in every waypoint.
+    /// </summary>
+    public void GetNextPatrolPoint()
+    {
+        _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Patrol);
+        UpdateTargetPosition();
+        _timer.Stop();
+    }
+
     public override void _PhysicsProcess(double _)
     {
         if (_navigationAgent.IsNavigationFinished())
         {
-            UpdateTargetPosition();
+            if (_stateMachine.CurrentState == EnemyStateMachine.EnemyStates.Patrol)
+            {
+                _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Idle);
+                _timer.Start();
+            }
         }
         else
         {
