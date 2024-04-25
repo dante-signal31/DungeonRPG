@@ -25,6 +25,7 @@ public partial class PlayerMoveState : PlayerState
 
     public override void _Input(InputEvent @event)
     {
+        CheckForAttackInput();
         if (Input.IsActionJustPressed(GameConstants.INPUT_DASH))
         {
             _characterNode.StateMachine.SwitchState<PlayerDashState>();
@@ -35,4 +36,7 @@ public partial class PlayerMoveState : PlayerState
     {
         _characterNode.AnimationPlayer.Play(GameConstants.ANIM_MOVE);
     }
+
+    protected override void ExitState()
+    { }
 }

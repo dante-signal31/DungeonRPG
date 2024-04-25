@@ -366,7 +366,7 @@ MaximumDeceleration = 1.0
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("44_eludx")
+texture = ExtResource("31_yy70x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

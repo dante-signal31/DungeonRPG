@@ -15,6 +15,7 @@ public partial class PlayerIdleState : PlayerState
 
     public override void _Input(InputEvent @event)
     {
+        CheckForAttackInput();
         if (Input.IsActionJustPressed((GameConstants.INPUT_DASH)))
         {
             _characterNode.StateMachine.SwitchState<PlayerDashState>();
@@ -24,5 +25,10 @@ public partial class PlayerIdleState : PlayerState
     protected override void EnterState()
     {
         _characterNode.AnimationPlayer.Play(GameConstants.ANIM_IDLE);
+    }
+
+    protected override void ExitState()
+    {
+        throw new System.NotImplementedException();
     }
 }

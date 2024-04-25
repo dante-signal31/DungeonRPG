@@ -20,10 +20,15 @@ public partial class PlayerDashState: PlayerState
         _characterNode.AnimationPlayer.Play(GameConstants.ANIM_DASH);
     }
 
-    public override void _ExitTree()
+    protected override void ExitState()
     {
         _dashTimerNode.Timeout -= _OnDashTimerTimeout;
     }
+
+    // public override void _ExitTree()
+    // {
+    //     _dashTimerNode.Timeout -= _OnDashTimerTimeout;
+    // }
 
     public override void _PhysicsProcess(double delta)
     {

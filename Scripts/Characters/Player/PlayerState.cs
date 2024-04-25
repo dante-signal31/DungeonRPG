@@ -41,4 +41,17 @@ public abstract partial class PlayerState : Node
     /// Actions taken when this state is activated as the current one.
     /// </summary>
     protected abstract void EnterState();
+    
+    /// <summary>
+    /// Actions taken when this state ceases to be the current one.
+    /// </summary>
+    protected abstract void ExitState();
+    
+    protected void CheckForAttackInput()
+    {
+        if (Input.IsActionJustPressed(GameConstants.INPUT_ATTACK))
+        {
+            _characterNode.StateMachine.SwitchState<PlayerAttackState>();
+        }
+    }
 }
