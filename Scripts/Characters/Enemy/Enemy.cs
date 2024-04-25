@@ -81,12 +81,16 @@ public partial class Enemy : CharacterBody3D
     [ExportGroup("Patrol behavior")]
     [Export] private Path3D _patrolPath;
     [Export] private float _patrolWaitingTime = 2.0f;
-    
-    
+
+
     /// <summary>
     /// Is this Character facing left?
     /// </summary>
-    public bool IsFacingLeft { get; private set; }
+    public bool IsFacingLeft
+    {
+        get => _spriteNode.FlipH;
+        set => Flip(value);
+    }
     
     private EnemyStateMachine _stateMachine;
     private PatrolBehavior _patrolBehavior;
@@ -117,16 +121,14 @@ public partial class Enemy : CharacterBody3D
 
     public override void _Process(double delta)
     {
-        Flip();
+        if (Velocity.X != 0)
+        {
+            IsFacingLeft = (Velocity.X < 0);
+        }
     }
 
-    public void Flip()
+    public void Flip(bool isFacingLeft)
     {
-        bool isMovingHorizontally = Velocity.X != 0;
-        if (isMovingHorizontally)
-        {
-            IsFacingLeft = Velocity.X < 0;
-            _spriteNode.FlipH = IsFacingLeft;
-        }
+        _spriteNode.FlipH = isFacingLeft;
     }
 }

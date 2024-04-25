@@ -8,25 +8,33 @@ namespace DungeonRPG.Scripts.Characters.Enemy;
 public partial class EnemyAIManager : Node
 {
     [ExportCategory("WIRING:")] 
+    [Export] private Enemy _characterNode;
     [Export] private EnemyStateMachine _stateMachine;
     [Export] private NavigationAI _navigationAi;
     [Export] private AgentMover _agentMover;
     [Export] private NavigationAgent3D _navigationAgent;
-    [Export] private VolumetricSensor _volumetricSensor;
+    [Export] private VolumetricSensor _pursuitSensor;
+    [Export] private VolumetricSensor _attackSensor;
     
     [ExportCategory("CONFIGURATION:")]
     [Export] private float _arrivingRadius;
+    
+    private Player.Player _attackedPlayer;
 
     public override void _EnterTree()
     {
-        _volumetricSensor.BodyEntered += OnPlayerDetected;
-        _volumetricSensor.BodyExited += OnPlayerExited;
+        _pursuitSensor.BodyEntered += OnPlayerDetectedInPursuitRange;
+        _pursuitSensor.BodyExited += OnPlayerExitedOfPursuitRange;
+        _attackSensor.BodyEntered += OnPlayerDetectedInAttackRange;
+        _attackSensor.BodyExited += OnPlayerExitedOfAttackRange;
     }
 
     public override void _ExitTree()
     {
-        _volumetricSensor.BodyEntered -= OnPlayerDetected;
-        _volumetricSensor.BodyExited -= OnPlayerExited;
+        _pursuitSensor.BodyEntered -= OnPlayerDetectedInPursuitRange;
+        _pursuitSensor.BodyExited -= OnPlayerExitedOfPursuitRange;
+        _attackSensor.BodyEntered -= OnPlayerDetectedInAttackRange;
+        _attackSensor.BodyExited -= OnPlayerExitedOfAttackRange;
     }
 
     public override void _Ready()
@@ -48,6 +56,9 @@ public partial class EnemyAIManager : Node
             case EnemyStateMachine.EnemyStates.Pursuit:
                 _agentMover.TargetPosition = _navigationAi.NextPositionToReachTarget;
                 break;
+            case EnemyStateMachine.EnemyStates.Attack:
+                _characterNode.IsFacingLeft = (_attackedPlayer.GlobalPosition.X - _characterNode.GlobalPosition.X) < 0;
+                break;
             default:
                 throw new NotImplementedException();
         }
@@ -59,13 +70,32 @@ public partial class EnemyAIManager : Node
         // }
     }
 
-    private void OnPlayerDetected(Node3D body)
+    private void OnPlayerDetectedInPursuitRange(Node3D body)
     {
         _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Pursuit);
     }
 
-    private void OnPlayerExited(Node3D body)
+    private void OnPlayerExitedOfPursuitRange(Node3D body)
     {
         _stateMachine.SwitchState(_stateMachine.DefaultState);
+    }
+    
+    private void OnPlayerDetectedInAttackRange(Node3D body)
+    {
+        _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Attack);
+        _attackedPlayer = (Player.Player) body;
+    }
+    
+    private void OnPlayerExitedOfAttackRange(Node3D body)
+    {
+        if (_pursuitSensor.DetectedBodies.Count > 0)
+        {
+            _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Pursuit);
+        }
+        else
+        {
+            _stateMachine.SwitchState(_stateMachine.DefaultState);
+        }
+        _attackedPlayer = null;
     }
 }

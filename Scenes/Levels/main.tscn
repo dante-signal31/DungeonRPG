@@ -135,48 +135,39 @@ shape = SubResource("BoxShape3D_hx6rx")
 
 [node name="Enemy" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.60742, 1.82862, 2.81301)
-DefaultState = 1
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D")
 
 [node name="Enemy2" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5855, 1.81923, 3.33369)
-DefaultState = 1
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D2")
 
 [node name="Enemy3" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6446, 1.79283, -7.43435)
-DefaultState = 1
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D3")
 
 [node name="Enemy4" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.0758, 1.81923, 5.91217)
-DefaultState = 1
-_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D8")
+_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D5")
 
 [node name="Enemy5" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.54, 1.76631, -6.07947)
-DefaultState = 1
-_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D9")
+_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D6")
 
 [node name="Enemy6" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.0125, 1.81935, -9.29372)
-DefaultState = 1
-_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D10")
+_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D7")
 
 [node name="Enemy7" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.2722, 6.64146, -25.6294)
-DefaultState = 1
-_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D5")
+_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D8")
 
 [node name="Enemy8" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2716, 6.64146, -26.4948)
-DefaultState = 1
-_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D6")
+_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D9")
 
 [node name="Enemy9" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3298, 6.66799, -26.4948)
-DefaultState = 1
-_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D7")
+_patrolPath = NodePath("../EnemiesPatrolPaths/Path3D10")
 
 [node name="EnemiesPatrolPaths" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25256, 0)
@@ -219,7 +210,6 @@ curve = SubResource("Curve3D_6e2pn")
 
 [node name="Enemy10" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.0645, 2.001, -17.6503)
-DefaultState = 1
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D6")
 
 [node name="Node3D" type="Node3D" parent="."]

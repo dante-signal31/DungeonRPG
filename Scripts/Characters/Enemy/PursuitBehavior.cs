@@ -9,7 +9,7 @@ public partial class PursuitBehavior : Node, INavigationBehavior
     [Signal] public delegate void TargetPositionChangedEventHandler(Vector3 newPosition);
     
     [ExportCategory("WIRING:")] 
-    [Export] private VolumetricSensor _volumetricSensor;
+    [Export] private VolumetricSensor _pursuitSensor;
     [Export] private Enemy _characterBody;
 
     [ExportCategory("CONFIGURATION:")] 
@@ -51,10 +51,10 @@ public partial class PursuitBehavior : Node, INavigationBehavior
     
     public void UpdateTargetPosition()
     {
-        if (_volumetricSensor.DetectedBodies.Count == 0) return;
+        if (_pursuitSensor.DetectedBodies.Count == 0) return;
         // There will be only one player in the game, so volumetric sensor will have only one
         // element when it detects anything in the player layer.
-        _player = (Player.Player) _volumetricSensor.DetectedBodies.First();
+        _player = (Player.Player) _pursuitSensor.DetectedBodies.First();
         Vector3 playerPosition = _player.GlobalPosition;
         float playerSpeed = _player.Velocity.Length();
         
@@ -102,7 +102,7 @@ public partial class PursuitBehavior : Node, INavigationBehavior
 
     public override void _PhysicsProcess(double delta)
     {
-        if (_volumetricSensor.DetectedBodies.Count > 0)
+        if (_pursuitSensor.DetectedBodies.Count > 0)
         {
             UpdateTargetPosition();
         }

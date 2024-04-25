@@ -1,7 +1,7 @@
-[gd_scene load_steps=142 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=143 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
-[ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_ncpa3"]
+[ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
 [ext_resource type="Texture2D" uid="uid://mpwronom2p6" path="res://Assets/Sprites/Characters/Enemy Knight/TakeHit/0_Demons_of_Darkness_Hurt_011.png" id="1_tolbi"]
 [ext_resource type="Texture2D" uid="uid://dvengx3l0j1f3" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_000.png" id="2_jm0os"]
 [ext_resource type="Texture2D" uid="uid://dp8xvhlv2w7y" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_001.png" id="3_2xwck"]
@@ -111,6 +111,7 @@
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
+loop_mode = 1
 step = 0.0833333
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -342,26 +343,30 @@ point_count = 3
 _data = [Vector2(0, 0.0240526), 0.0, 4.04861, 0, 0, Vector2(0.226923, 0.646965), 1.42483, 1.42483, 0, 0, Vector2(0.992857, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_emiby"]
-height = 1.5178
-radius = 5.02771
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bf40k"]
+height = 1.49535
+radius = 6.01515
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8xjtk"]
+radius = 1.40558
 
 [node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover")]
 collision_layer = 4
 collision_mask = 7
-script = ExtResource("1_ncpa3")
+script = ExtResource("1_7y2ff")
 _spriteNode = NodePath("Sprite3D")
 _agentMover = NodePath("AI/Movement")
-MaximumSpeed = 2.0
-StopSpeed = 0.1
-MaximumRotationalSpeed = 10.0
-MaximumAcceleration = 10.0
-MaximumDeceleration = 10.0
+DefaultState = 1
+MaximumSpeed = 3.0
+StopSpeed = 0.2
+MaximumRotationalSpeed = 1.0
+MaximumAcceleration = 1.0
+MaximumDeceleration = 1.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("31_yy70x")
+texture = ExtResource("44_eludx")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -378,19 +383,21 @@ anim_player = NodePath("../AnimationPlayer")
 script = ExtResource("100_2wao8")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+target_desired_distance = 0.5
 avoidance_enabled = true
 radius = 1.0
 time_horizon_agents = 1.97
 debug_enabled = true
 
-[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterNode", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent", "_volumetricSensor")]
+[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterNode", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent", "_pursuitSensor", "_attackSensor")]
 script = ExtResource("102_s3qvr")
 _characterNode = NodePath("..")
 _stateMachine = NodePath("../StateMachine")
 _navigationAi = NodePath("Navigation")
 _agentMover = NodePath("Movement")
 _navigationAgent = NodePath("../NavigationAgent3D")
-_volumetricSensor = NodePath("../VolumetricSensor")
+_pursuitSensor = NodePath("../PursuitSensor")
+_attackSensor = NodePath("../AttackSensor")
 _arrivingRadius = 0.3
 
 [node name="Navigation" type="Node" parent="AI" node_paths=PackedStringArray("_stateMachine", "_navigationAgent", "_patrolBehavior", "_pursuitBehavior", "_characterNode", "_timer")]
@@ -405,9 +412,9 @@ _timer = NodePath("Timer")
 [node name="Patrol" type="Node" parent="AI/Navigation"]
 script = ExtResource("102_5piw0")
 
-[node name="Pursuit" type="Node" parent="AI/Navigation" node_paths=PackedStringArray("_volumetricSensor", "_characterBody")]
+[node name="Pursuit" type="Node" parent="AI/Navigation" node_paths=PackedStringArray("_pursuitSensor", "_characterBody")]
 script = ExtResource("104_sigy7")
-_volumetricSensor = NodePath("../../../VolumetricSensor")
+_pursuitSensor = NodePath("../../../PursuitSensor")
 _characterBody = NodePath("../../..")
 
 [node name="Timer" type="Timer" parent="AI/Navigation"]
@@ -425,10 +432,14 @@ _decelerationCurve = SubResource("Curve_r3vma")
 _accelerationRadius = 1.0
 _accelerationCurve = SubResource("Curve_sf4pv")
 
-[node name="VolumetricSensor" parent="." instance=ExtResource("108_wfnqb")]
-SensorLayers = 1
+[node name="PursuitSensor" parent="." instance=ExtResource("108_wfnqb")]
 DetectedLayers = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VolumetricSensor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011313, 0)
-shape = SubResource("CylinderShape3D_emiby")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PursuitSensor"]
+shape = SubResource("CylinderShape3D_bf40k")
+
+[node name="AttackSensor" parent="." instance=ExtResource("108_wfnqb")]
+DetectedLayers = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackSensor"]
+shape = SubResource("CylinderShape3D_8xjtk")
