@@ -11,13 +11,12 @@ public partial class AgentMover : Node
     [Export] private SteeringBehavior _steeringBehavior;
     [Export] private CharacterBody3D _characterBody;
     [Export] private EnemyStateMachine _stateMachine;
-
-    [ExportCategory("CONFIGURATION:")]
-    [Export] private float _maximumSpeed = 2.0f;
-    [Export] private float _stopSpeed = 0.1f;
-    [Export] private float _maximumRotationalSpeed = 10.0f;
-    [Export] private float _maximumAcceleration = 10.0f;
-    [Export] private float _maximumDeceleration = 10.0f;
+    
+    public float MaximumSpeed { get; set; } = 2.0f;
+    public float StopSpeed { get; set; }= 0.1f;
+    public float MaximumRotationalSpeed { get; set; } = 10.0f;
+    public float MaximumAcceleration { get; set; } = 10.0f;
+    public float MaximumDeceleration { get; set; } = 10.0f;
     
     /// <summary>
     /// This agent target position.
@@ -54,11 +53,11 @@ public partial class AgentMover : Node
             GetOwner<Node3D>(), 
             TargetPosition,
             _characterBody.Velocity, 
-            _maximumSpeed, 
-            _stopSpeed,
-            _maximumRotationalSpeed,
-            _maximumAcceleration,
-            _maximumDeceleration,
+            MaximumSpeed, 
+            StopSpeed,
+            MaximumRotationalSpeed,
+            MaximumAcceleration,
+            MaximumDeceleration,
             0);
     }
 

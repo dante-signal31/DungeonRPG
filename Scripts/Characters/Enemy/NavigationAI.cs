@@ -51,7 +51,6 @@ public partial class NavigationAI : Node
     }
 
     private float _arrivingRadius;
-
     /// <summary>
     /// Distance to target to get it as reached.
     /// </summary>
@@ -69,13 +68,16 @@ public partial class NavigationAI : Node
     private EnemyStateMachine.EnemyStates _currentState;
     private INavigationBehavior _currentNavigationBehavior;
     private bool _newWaypointNeeded = true;
+    private bool _newPursuitTargetPosition = true;
     private RandomNumberGenerator _rng;
+    private bool _navigationReady = false;
     
     public override void _EnterTree()
     { 
         _stateMachine.StateChanged += OnStateChanged;
         _timer.Timeout += GetNextPatrolPoint;
         _navigationAgent.WaypointReached += OnWaypointReached;
+        _pursuitBehavior.TargetPositionChanged += OnPursuitTargetPositionChanged;
         _rng = new RandomNumberGenerator();
     }
 
@@ -84,6 +86,7 @@ public partial class NavigationAI : Node
         _stateMachine.StateChanged -= OnStateChanged;
         _timer.Timeout -= GetNextPatrolPoint;
         _navigationAgent.WaypointReached -= OnWaypointReached;
+        _pursuitBehavior.TargetPositionChanged -= OnPursuitTargetPositionChanged;
     }
 
     public override void _Ready()
@@ -93,7 +96,18 @@ public partial class NavigationAI : Node
         UpdateNavigationBehavior();
         
         // Make sure to not await during _Ready.
-        Callable.From(ActorSetup).CallDeferred();
+        Callable.From(NavigationSetup).CallDeferred();
+        
+    }
+
+    private async void NavigationSetup()
+    {
+        // Some code flow call this method in the Ready step. Problem is that any call
+        // to the navigation agent should be made after the first frame, to let navigation
+        // server to prepare itself. So we wait for the first physics frame.
+        await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+        _navigationReady = true;
+        UpdateTargetPosition();
     }
 
     /// <summary>
@@ -102,8 +116,17 @@ public partial class NavigationAI : Node
     /// </summary>
     private void UpdateTargetPosition()
     { 
-        _currentNavigationBehavior.UpdateTargetPosition();
-        FinalTargetPosition = _currentNavigationBehavior.TargetPosition;
+        // // Some code flow call this method in the Ready step. Problem is that any call
+        // // to the navigation agent should be made after the first frame, to let navigation
+        // // server to prepare itself. So we wait for the first physics frame.
+        // await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+        
+        // Now that the navigation map is no longer empty, set the movement target.
+        if (_currentNavigationBehavior != null)
+        {
+            _currentNavigationBehavior.UpdateTargetPosition();
+            FinalTargetPosition = _currentNavigationBehavior.TargetPosition;
+        }
     }
 
     private void OnStateChanged(EnemyStateMachine.EnemyStates newState)
@@ -126,15 +149,6 @@ public partial class NavigationAI : Node
         };
     }
 
-    private async void ActorSetup()
-    {
-        // Wait for the first physics frame so the NavigationServer can sync.
-        await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
-        
-        // Now that the navigation map is no longer empty, set the movement target.
-        UpdateTargetPosition();
-    }
-
     /// <summary>
     /// This method is called by the timer after waiting in a patrol path waypoint. It returns
     /// next waypoint and resumes patrolling. This way the enemy waits a moment in every waypoint.
@@ -154,20 +168,48 @@ public partial class NavigationAI : Node
         _newWaypointNeeded = true;
     }
 
+    public void OnPursuitTargetPositionChanged(Vector3 position)
+    {
+        _newPursuitTargetPosition = true;
+    }
+
     public override void _PhysicsProcess(double _)
     {
-        if (_navigationAgent.IsNavigationFinished())
+        if (!_navigationReady) return;
+        switch (_stateMachine.CurrentState)
         {
-            if (_stateMachine.CurrentState == EnemyStateMachine.EnemyStates.Patrol)
-            {
-                _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Idle);
-                _timer.Start();
-            }
-        }
-        else if (_newWaypointNeeded)
-        {
-            NextPositionToReachTarget = _navigationAgent.GetNextPathPosition();
-            _newWaypointNeeded = false;
-        }
+            case EnemyStateMachine.EnemyStates.Patrol:
+                if (_navigationAgent.IsNavigationFinished())
+                {
+
+                    _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Idle);
+                    _timer.Start();
+                }
+                else if (_newWaypointNeeded)
+                {
+                    NextPositionToReachTarget = _navigationAgent.GetNextPathPosition();
+                    _newWaypointNeeded = false;
+                }
+                break;
+            case EnemyStateMachine.EnemyStates.Pursuit:
+                if (_newPursuitTargetPosition)
+                {
+                    UpdateTargetPosition();
+                    _newPursuitTargetPosition = false;
+                }
+                else
+                {
+                    if (_navigationAgent.IsNavigationFinished())
+                    {
+                        // TODO: Here, enemy should fight.
+                    }
+                    else if (_newWaypointNeeded)
+                    {
+                        NextPositionToReachTarget = _navigationAgent.GetNextPathPosition();
+                        _newWaypointNeeded = false;
+                    }
+                }
+                break;
+        } 
     }
 }

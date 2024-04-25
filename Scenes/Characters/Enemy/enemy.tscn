@@ -1,4 +1,4 @@
-[gd_scene load_steps=140 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=142 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_ncpa3"]
@@ -107,6 +107,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/PursuitBehavior.cs" id="104_sigy7"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/AgentMover.cs" id="105_stnod"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/ArriveSteeringBehavior.cs" id="106_hxq6p"]
+[ext_resource type="PackedScene" uid="uid://dkajksv32hcun" path="res://Scenes/Sensors/VolumetricSensor.tscn" id="108_wfnqb"]
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
@@ -341,16 +342,26 @@ point_count = 3
 _data = [Vector2(0, 0.0240526), 0.0, 4.04861, 0, 0, Vector2(0.226923, 0.646965), 1.42483, 1.42483, 0, 0, Vector2(0.992857, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode")]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_emiby"]
+height = 1.5178
+radius = 5.02771
+
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover")]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_ncpa3")
 _spriteNode = NodePath("Sprite3D")
+_agentMover = NodePath("AI/Movement")
+MaximumSpeed = 2.0
+StopSpeed = 0.1
+MaximumRotationalSpeed = 10.0
+MaximumAcceleration = 10.0
+MaximumDeceleration = 10.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("34_utj5k")
+texture = ExtResource("31_yy70x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -372,13 +383,14 @@ radius = 1.0
 time_horizon_agents = 1.97
 debug_enabled = true
 
-[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterBody", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent")]
+[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterNode", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent", "_volumetricSensor")]
 script = ExtResource("102_s3qvr")
-_characterBody = NodePath("..")
+_characterNode = NodePath("..")
 _stateMachine = NodePath("../StateMachine")
 _navigationAi = NodePath("Navigation")
 _agentMover = NodePath("Movement")
 _navigationAgent = NodePath("../NavigationAgent3D")
+_volumetricSensor = NodePath("../VolumetricSensor")
 _arrivingRadius = 0.3
 
 [node name="Navigation" type="Node" parent="AI" node_paths=PackedStringArray("_stateMachine", "_navigationAgent", "_patrolBehavior", "_pursuitBehavior", "_characterNode", "_timer")]
@@ -393,8 +405,10 @@ _timer = NodePath("Timer")
 [node name="Patrol" type="Node" parent="AI/Navigation"]
 script = ExtResource("102_5piw0")
 
-[node name="Pursuit" type="Node" parent="AI/Navigation"]
+[node name="Pursuit" type="Node" parent="AI/Navigation" node_paths=PackedStringArray("_volumetricSensor", "_characterBody")]
 script = ExtResource("104_sigy7")
+_volumetricSensor = NodePath("../../../VolumetricSensor")
+_characterBody = NodePath("../../..")
 
 [node name="Timer" type="Timer" parent="AI/Navigation"]
 
@@ -410,3 +424,11 @@ _brakingRadius = 1.0
 _decelerationCurve = SubResource("Curve_r3vma")
 _accelerationRadius = 1.0
 _accelerationCurve = SubResource("Curve_sf4pv")
+
+[node name="VolumetricSensor" parent="." instance=ExtResource("108_wfnqb")]
+SensorLayers = 1
+DetectedLayers = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VolumetricSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011313, 0)
+shape = SubResource("CylinderShape3D_emiby")

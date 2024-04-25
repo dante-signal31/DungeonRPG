@@ -112,6 +112,11 @@ public partial class EnemyStateMachine : AnimationTree
             _ => throw new Exception("Unknown state: " + state)
         };
         _stateMachine.Travel(newStateName);
+        // There's a bug in Godot that prevents AnimationTree to emit AnimationStarted signal
+        // when that animation loops. So I cannot rely on OnAnimationStarted() be called to emit
+        // StateChanged signal. That's why I do it here manually.
+        // https://github.com/godotengine/godot/issues/76159
+        EmitSignal(SignalName.StateChanged, (int)state);
     }
     
     public override void _EnterTree()

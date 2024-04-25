@@ -4,12 +4,8 @@ namespace DungeonRPG.Scripts.Characters.Enemy;
 
 public partial class PatrolBehavior : Node, INavigationBehavior
 {
-    /// <summary>
-    /// Signal a new navigation target position has been set.
-    /// </summary>
-    [Signal] public delegate void TargetPositionChangedEventHandler(Vector3 newTargetPosition);
-    
     private Vector3 _currentTargetPosition;
+    
     /// <summary>
     /// This behavior calculated target.
     /// </summary>
@@ -22,19 +18,13 @@ public partial class PatrolBehavior : Node, INavigationBehavior
     
     public Path3D PatrolPath { get; set; }
     
-    
-    
     private int _currentPatrolPointIndex = 0;
     private int _totalPatrolPoints = 0;
-    private Node3D _characterNode;
     
 
     public override void _Ready()
     {
         _totalPatrolPoints = PatrolPath.Curve.PointCount;
-        _characterNode = GetOwner<Node3D>();
-        // _currentTargetPosition = GetNextPatrolPoint();
-        // UpdateTargetPosition();
     }
 
     /// <summary>
@@ -69,15 +59,5 @@ public partial class PatrolBehavior : Node, INavigationBehavior
     public void UpdateTargetPosition()
     {
         _currentTargetPosition = GetNextPatrolPoint();
-        // EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
     }
-    
-    // public override void _PhysicsProcess(double _)
-    // {
-    //     if (_characterNode.GlobalPosition.DistanceTo(_currentTargetPosition)<=ArrivingRadius)
-    //     {
-    //         _currentTargetPosition = GetNextPatrolPoint();
-    //         EmitSignal(SignalName.TargetPositionChanged, _currentTargetPosition);
-    //     }
-    // }
 }
