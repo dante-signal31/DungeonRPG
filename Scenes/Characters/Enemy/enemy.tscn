@@ -1,4 +1,4 @@
-[gd_scene load_steps=143 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=145 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
@@ -108,6 +108,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/AgentMover.cs" id="105_stnod"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/ArriveSteeringBehavior.cs" id="106_hxq6p"]
 [ext_resource type="PackedScene" uid="uid://dkajksv32hcun" path="res://Scenes/Sensors/VolumetricSensor.tscn" id="108_wfnqb"]
+[ext_resource type="Script" path="res://Scripts/Characters/Hurtbox.cs" id="109_4cve0"]
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
@@ -350,6 +351,9 @@ radius = 6.01515
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8xjtk"]
 radius = 1.40558
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
+size = Vector3(0.5, 0.5, 0.5)
+
 [node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover")]
 collision_layer = 4
 collision_mask = 7
@@ -366,7 +370,7 @@ MaximumDeceleration = 1.0
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("31_yy70x")
+texture = ExtResource("32_joi1u")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -443,3 +447,20 @@ DetectedLayers = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackSensor"]
 shape = SubResource("CylinderShape3D_8xjtk")
+
+[node name="Hitbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.934887, -0.116097, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("BoxShape3D_yhicj")
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("109_4cve0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.107645, -0.0848711, 0)
+shape = SubResource("CapsuleShape3D_kp70k")
