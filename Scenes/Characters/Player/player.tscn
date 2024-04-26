@@ -1,7 +1,8 @@
-[gd_scene load_steps=76 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=79 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
+[ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="2_8nuca"]
 [ext_resource type="Texture2D" uid="uid://c4gbvlwmeygjd" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_005.png" id="2_40kcw"]
 [ext_resource type="Texture2D" uid="uid://bk2skb4hkbft2" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_000.png" id="2_lhik7"]
 [ext_resource type="Texture2D" uid="uid://c70rg8vplek1s" path="res://Assets/Sprites/Characters/Player/Kicking/Kicking_011.png" id="2_olq6i"]
@@ -68,6 +69,16 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerAttackState.cs" id="66_rvbqp"]
 [ext_resource type="Script" path="res://Scripts/Characters/Hurtbox.cs" id="67_xl0sd"]
 
+[sub_resource type="Resource" id="Resource_12dws"]
+script = ExtResource("2_8nuca")
+StatType = 0
+StatValue = 100.0
+
+[sub_resource type="Resource" id="Resource_gkjya"]
+script = ExtResource("2_8nuca")
+StatType = 1
+StatValue = 3.0
+
 [sub_resource type="Animation" id="Animation_ydqwq"]
 resource_name = "Attack1"
 step = 0.0833333
@@ -82,6 +93,32 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("38_x248n"), ExtResource("39_ta4eg"), ExtResource("40_n7txg"), ExtResource("41_1nfa5"), ExtResource("42_1d482"), ExtResource("43_iyaae"), ExtResource("45_7ab7s"), ExtResource("46_agbuv"), ExtResource("47_ytek6"), ExtResource("48_wokqh"), ExtResource("49_8r8u7"), ExtResource("2_olq6i")]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StateMachine/AttackState")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2499),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"PerformHit"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape3D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3332, 0.9996),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_1i32f"]
@@ -98,6 +135,32 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("50_n5twv"), ExtResource("51_0qaq1"), ExtResource("52_fut06"), ExtResource("53_1ofkh"), ExtResource("54_mgejc"), ExtResource("55_57hna"), ExtResource("56_461ve"), ExtResource("57_0wmgw"), ExtResource("58_4ty3f"), ExtResource("59_bnrbb"), ExtResource("60_kio6h"), ExtResource("61_4ln20")]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StateMachine/AttackState")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2499),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"PerformHit"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape3D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3332, 0.9996),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_gr0dg"]
@@ -167,7 +230,7 @@ height = 1.39603
 [sub_resource type="BoxShape3D" id="BoxShape3D_pssd2"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "_spriteNode", "StateMachine")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "_spriteNode", "StateMachine", "HurtBox", "HitBox")]
 collision_layer = 2
 floor_max_angle = 1.48353
 floor_snap_length = 0.2
@@ -175,11 +238,14 @@ script = ExtResource("1_6euok")
 AnimationPlayer = NodePath("AnimationPlayer")
 _spriteNode = NodePath("Sprite3D")
 StateMachine = NodePath("StateMachine")
+HurtBox = NodePath("Hurtbox")
+HitBox = NodePath("Hitbox")
+_statResources = Array[Object]([SubResource("Resource_12dws"), SubResource("Resource_gkjya")])
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("38_x248n")
+texture = ExtResource("61_4ln20")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -208,6 +274,7 @@ one_shot = true
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("_cooldownTimer")]
 script = ExtResource("66_rvbqp")
 _cooldownTimer = NodePath("Timer")
+_hitBoxDistance = 0.75
 
 [node name="Timer" type="Timer" parent="StateMachine/AttackState"]
 
@@ -215,12 +282,12 @@ _cooldownTimer = NodePath("Timer")
 shape = SubResource("CapsuleShape3D_lvw7v")
 
 [node name="Hitbox" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.934887, -0.116097, 0)
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_pssd2")
+disabled = true
 
 [node name="Hurtbox" type="Area3D" parent="."]
 collision_layer = 0

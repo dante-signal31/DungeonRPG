@@ -1,8 +1,9 @@
-[gd_scene load_steps=145 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=148 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
 [ext_resource type="Texture2D" uid="uid://mpwronom2p6" path="res://Assets/Sprites/Characters/Enemy Knight/TakeHit/0_Demons_of_Darkness_Hurt_011.png" id="1_tolbi"]
+[ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="2_545la"]
 [ext_resource type="Texture2D" uid="uid://dvengx3l0j1f3" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_000.png" id="2_jm0os"]
 [ext_resource type="Texture2D" uid="uid://dp8xvhlv2w7y" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_001.png" id="3_2xwck"]
 [ext_resource type="Texture2D" uid="uid://tkrq24chcba8" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_002.png" id="4_58xpf"]
@@ -109,6 +110,16 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/ArriveSteeringBehavior.cs" id="106_hxq6p"]
 [ext_resource type="PackedScene" uid="uid://dkajksv32hcun" path="res://Scenes/Sensors/VolumetricSensor.tscn" id="108_wfnqb"]
 [ext_resource type="Script" path="res://Scripts/Characters/Hurtbox.cs" id="109_4cve0"]
+
+[sub_resource type="Resource" id="Resource_t5cvc"]
+script = ExtResource("2_545la")
+StatType = 0
+StatValue = 20.0
+
+[sub_resource type="Resource" id="Resource_564xx"]
+script = ExtResource("2_545la")
+StatType = 1
+StatValue = 4.0
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
@@ -354,7 +365,7 @@ radius = 1.40558
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover")]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover", "HurtBox", "HitBox")]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_7y2ff")
@@ -366,11 +377,14 @@ StopSpeed = 0.2
 MaximumRotationalSpeed = 1.0
 MaximumAcceleration = 1.0
 MaximumDeceleration = 1.0
+HurtBox = NodePath("Hurtbox")
+HitBox = NodePath("Hitbox")
+_statResources = Array[Object]([SubResource("Resource_t5cvc"), SubResource("Resource_564xx")])
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("32_joi1u")
+texture = ExtResource("35_urlnr")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

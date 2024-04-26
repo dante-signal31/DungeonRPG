@@ -1,9 +1,10 @@
+using DungeonRPG.Scripts.Characters.Enemy;
 using DungeonRPG.Scripts.General;
 using Godot;
 
 namespace DungeonRPG.Scripts.Characters.Player;
 
-public partial class Player : CharacterBody3D
+public partial class Player : Character
 {
     [ExportGroup("Required Nodes")]
     [Export] public AnimationPlayer AnimationPlayer { get; private set; }

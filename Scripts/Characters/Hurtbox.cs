@@ -4,6 +4,7 @@ namespace DungeonRPG.Scripts.Characters;
 
 public partial class Hurtbox : Area3D
 {
+    
     public override void _EnterTree()
     {
         AreaEntered += OnAreaEntered;
@@ -18,11 +19,11 @@ public partial class Hurtbox : Area3D
 
     private void OnAreaEntered(Area3D area)
     {
-        GD.Print($"[{GetOwner<Node>().Name}] Under attack from {area.GetOwner<Node>().Name}");
+        // GD.Print($"[{GetOwner<Node>().Name}] Under attack from {area.GetOwner<Node>().Name}");
     }
 
     private void OnAreaExited(Area3D area)
     {
-        GD.Print($"[{GetOwner<Node>().Name}] {area.GetOwner<Node>().Name} ceases his attack.");
+        // GD.Print($"[{GetOwner<Node>().Name}] {area.GetOwner<Node>().Name} ceases his attack.");
     }
 }

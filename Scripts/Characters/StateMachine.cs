@@ -1,3 +1,4 @@
+using System.Linq;
 using DungeonRPG.Scripts.General;
 using Godot;
 
@@ -15,18 +16,7 @@ public partial class StateMachine : Node
     
     public void SwitchState<T>()
     {
-        Player.PlayerState newState = null;
-
-        foreach (Player.PlayerState state in _states)
-        {
-            if (state is T)
-            {
-                newState = state;
-                break;
-            }
-        }
-
-        if (newState == null) return;
+        Player.PlayerState newState = _states.First(state => state is T);
 
         // Disable current state because we are going to switch to another one.
         _currentState.Notify(GameConstants.NOTIFICATION_STATE_EXIT);

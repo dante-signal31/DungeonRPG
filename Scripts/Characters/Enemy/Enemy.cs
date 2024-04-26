@@ -3,7 +3,7 @@ using Godot;
 
 namespace DungeonRPG.Scripts.Characters.Enemy;
 
-public partial class Enemy : CharacterBody3D
+public partial class Enemy : Character
 {
     [ExportCategory("WIRING:")]
     [Export] private Sprite3D _spriteNode;
@@ -104,6 +104,7 @@ public partial class Enemy : CharacterBody3D
     
     public override void _EnterTree()
     {
+        base._EnterTree();
         _stateMachine = GetNode<EnemyStateMachine>("StateMachine");
         _patrolBehavior = GetNode<PatrolBehavior>("AI/Navigation/Patrol");
         _patrolBehavior.PatrolPath = _patrolPath;

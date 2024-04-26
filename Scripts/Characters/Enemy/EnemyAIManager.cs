@@ -57,7 +57,8 @@ public partial class EnemyAIManager : Node
                 _agentMover.TargetPosition = _navigationAi.NextPositionToReachTarget;
                 break;
             case EnemyStateMachine.EnemyStates.Attack:
-                _characterNode.IsFacingLeft = (_attackedPlayer.GlobalPosition.X - _characterNode.GlobalPosition.X) < 0;
+                if (_attackedPlayer != null)
+                    _characterNode.IsFacingLeft = (_attackedPlayer.GlobalPosition.X - _characterNode.GlobalPosition.X) < 0;
                 break;
             default:
                 throw new NotImplementedException();

@@ -10,6 +10,7 @@ public partial class PlayerAttackState : PlayerState
 
     [ExportCategory("CONFIGURATION:")] 
     [Export] private float _cooldownTime = 3.0f;
+    [Export] private float _hitBoxDistance = 1.0f;
         
     private int comboCounter = 1;
     private int maxComboCount = 2;
@@ -57,5 +58,16 @@ public partial class PlayerAttackState : PlayerState
     private void OnCooldownTimerTimeout()
     {
         comboCounter = 1;
+    }
+
+    private void PerformHit()
+    {
+        PlaceHitBox();
+    }
+
+    private void PlaceHitBox()
+    {
+        Vector3 newPosition = _characterNode.IsFacingLeft? Vector3.Left : Vector3.Right;
+        _characterNode.HitBox.Position = newPosition * _hitBoxDistance;
     }
 }
