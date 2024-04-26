@@ -1,4 +1,4 @@
-[gd_scene load_steps=148 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=150 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
@@ -110,6 +110,8 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/ArriveSteeringBehavior.cs" id="106_hxq6p"]
 [ext_resource type="PackedScene" uid="uid://dkajksv32hcun" path="res://Scenes/Sensors/VolumetricSensor.tscn" id="108_wfnqb"]
 [ext_resource type="Script" path="res://Scripts/Characters/Hurtbox.cs" id="109_4cve0"]
+[ext_resource type="Script" path="res://Scripts/Characters/Enemy/Attack.cs" id="109_5tvnf"]
+[ext_resource type="Script" path="res://Scripts/Characters/Enemy/Combat.cs" id="109_makhg"]
 
 [sub_resource type="Resource" id="Resource_t5cvc"]
 script = ExtResource("2_545la")
@@ -132,10 +134,36 @@ tracks/0/path = NodePath("Sprite3D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333, 0.666667, 0.75, 0.833333, 0.916667),
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333, 0.666667, 0.75, 0.833333, 0.9163),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("2_jm0os"), ExtResource("3_2xwck"), ExtResource("4_58xpf"), ExtResource("5_cesks"), ExtResource("6_sarn2"), ExtResource("7_thlhu"), ExtResource("8_n5u2c"), ExtResource("9_2867x"), ExtResource("10_owta2"), ExtResource("11_todir"), ExtResource("12_kje1f"), ExtResource("13_mq8je")]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AI/Combat/Attack")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.416667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"PerformHit"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape3D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5, 0.916667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_js7uq"]
@@ -359,8 +387,8 @@ point_count = 3
 height = 1.49535
 radius = 6.01515
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_8xjtk"]
-radius = 1.40558
+[sub_resource type="BoxShape3D" id="BoxShape3D_mppni"]
+size = Vector3(1.00861, 1, 0.523743)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -384,7 +412,7 @@ _statResources = Array[Object]([SubResource("Resource_t5cvc"), SubResource("Reso
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("35_urlnr")
+texture = ExtResource("29_1g1ix")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -450,6 +478,17 @@ _decelerationCurve = SubResource("Curve_r3vma")
 _accelerationRadius = 1.0
 _accelerationCurve = SubResource("Curve_sf4pv")
 
+[node name="Combat" type="Node" parent="AI" node_paths=PackedStringArray("_characterNode", "_attackSensor", "_stateMachine")]
+script = ExtResource("109_makhg")
+_characterNode = NodePath("../..")
+_attackSensor = NodePath("../../AttackSensor")
+_stateMachine = NodePath("../../StateMachine")
+
+[node name="Attack" type="Node" parent="AI/Combat" node_paths=PackedStringArray("_characterNode")]
+script = ExtResource("109_5tvnf")
+_characterNode = NodePath("../../..")
+_hitBoxDistance = 0.75
+
 [node name="PursuitSensor" parent="." instance=ExtResource("108_wfnqb")]
 DetectedLayers = 2
 
@@ -460,10 +499,10 @@ shape = SubResource("CylinderShape3D_bf40k")
 DetectedLayers = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackSensor"]
-shape = SubResource("CylinderShape3D_8xjtk")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.498642, 0, 0.000457764)
+shape = SubResource("BoxShape3D_mppni")
 
 [node name="Hitbox" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.934887, -0.116097, 0)
 collision_layer = 4
 collision_mask = 0
 
