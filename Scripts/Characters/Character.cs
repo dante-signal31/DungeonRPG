@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using System.Runtime.CompilerServices;
 using DungeonRPG.Scripts.Resources;
 using Godot;
 
-namespace DungeonRPG.Scripts.Characters.Enemy;
+namespace DungeonRPG.Scripts.Characters;
 
 public partial class Character : CharacterBody3D
 {
@@ -11,14 +10,7 @@ public partial class Character : CharacterBody3D
     [Export] public Area3D HitBox { get; private set; }
     [Export] private StatResource[] _statResources;
 
-    public float Strength
-    {
-        get
-        {
-            return GetStatResource(Stat.Strength).StatValue;
-        }
-    }
-
+    public float Strength => GetStatResource(Stat.Strength).StatValue;
 
     public override void _EnterTree()
     {

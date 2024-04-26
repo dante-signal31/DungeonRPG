@@ -3,7 +3,7 @@ using Godot;
 
 namespace DungeonRPG.Scripts.Characters.Enemy;
 
-public partial class Enemy : Character
+public partial class Enemy : Characters.Character
 {
     [ExportCategory("WIRING:")]
     [Export] private Sprite3D _spriteNode;

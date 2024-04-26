@@ -37,7 +37,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerIdleState.cs" id="32_oj2li"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerMoveState.cs" id="33_i5yk7"]
 [ext_resource type="Texture2D" uid="uid://e1hsisvwssww" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_000.png" id="33_qu3ob"]
-[ext_resource type="Script" path="res://Scripts/Characters/StateMachine.cs" id="34_cd0h6"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/StateMachine.cs" id="34_cd0h6"]
 [ext_resource type="Texture2D" uid="uid://cro4jvjpqgfkq" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_001.png" id="34_ues0c"]
 [ext_resource type="Texture2D" uid="uid://bsck13u1kexyu" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_002.png" id="35_ebha0"]
 [ext_resource type="Texture2D" uid="uid://bpniss1ly6qmt" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_003.png" id="36_ns12a"]
@@ -115,7 +115,7 @@ tracks/2/path = NodePath("Hitbox/CollisionShape3D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.3332, 0.9996),
+"times": PackedFloat32Array(0.3332, 0.9163),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -224,7 +224,7 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvw7v"]
-radius = 0.479579
+radius = 0.407342
 height = 1.39603
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pssd2"]
@@ -245,7 +245,7 @@ _statResources = Array[Object]([SubResource("Resource_12dws"), SubResource("Reso
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("56_461ve")
+texture = ExtResource("42_1d482")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -287,6 +287,7 @@ collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_pssd2")
+disabled = true
 
 [node name="Hurtbox" type="Area3D" parent="."]
 collision_layer = 0

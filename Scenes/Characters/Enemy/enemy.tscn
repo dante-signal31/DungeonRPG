@@ -125,7 +125,6 @@ StatValue = 4.0
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
-loop_mode = 1
 step = 0.0833333
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -146,7 +145,7 @@ tracks/1/path = NodePath("AI/Combat/Attack")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.416667),
+"times": PackedFloat32Array(0.25),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -160,7 +159,7 @@ tracks/2/path = NodePath("Hitbox/CollisionShape3D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.5, 0.916667),
+"times": PackedFloat32Array(0.166667, 0.916667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -302,7 +301,7 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kp70k"]
-radius = 0.463776
+radius = 0.437416
 height = 1.30294
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i6sim"]
@@ -337,6 +336,7 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uuocf"]
 switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pkpd0"]
 advance_mode = 2
@@ -350,6 +350,7 @@ advance_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2myxi"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wej8v"]
+switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nv4y2"]
 
@@ -387,8 +388,9 @@ point_count = 3
 height = 1.49535
 radius = 6.01515
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mppni"]
-size = Vector3(1.00861, 1, 0.523743)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_h6w04"]
+height = 1.4777
+radius = 1.00283
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
 size = Vector3(0.5, 0.5, 0.5)
@@ -412,7 +414,7 @@ _statResources = Array[Object]([SubResource("Resource_t5cvc"), SubResource("Reso
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("29_1g1ix")
+texture = ExtResource("46_rhs1c")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -484,10 +486,10 @@ _characterNode = NodePath("../..")
 _attackSensor = NodePath("../../AttackSensor")
 _stateMachine = NodePath("../../StateMachine")
 
-[node name="Attack" type="Node" parent="AI/Combat" node_paths=PackedStringArray("_characterNode")]
+[node name="Attack" type="Node" parent="AI/Combat" node_paths=PackedStringArray("_characterNode", "_attackSensor")]
 script = ExtResource("109_5tvnf")
 _characterNode = NodePath("../../..")
-_hitBoxDistance = 0.75
+_attackSensor = NodePath("../../../AttackSensor")
 
 [node name="PursuitSensor" parent="." instance=ExtResource("108_wfnqb")]
 DetectedLayers = 2
@@ -499,8 +501,7 @@ shape = SubResource("CylinderShape3D_bf40k")
 DetectedLayers = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackSensor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.498642, 0, 0.000457764)
-shape = SubResource("BoxShape3D_mppni")
+shape = SubResource("CylinderShape3D_h6w04")
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 4
@@ -508,6 +509,7 @@ collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_yhicj")
+disabled = true
 
 [node name="Hurtbox" type="Area3D" parent="."]
 collision_layer = 0

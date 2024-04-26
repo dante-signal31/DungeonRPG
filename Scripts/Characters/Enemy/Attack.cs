@@ -1,4 +1,6 @@
-﻿using Godot;
+﻿using System.Linq;
+using DungeonRPG.Scripts.Sensors;
+using Godot;
 
 namespace DungeonRPG.Scripts.Characters.Enemy;
 
@@ -6,9 +8,7 @@ public partial class Attack : Node
 {
     [ExportCategory("WIRING:")]
     [Export] private Enemy _characterNode;
-    
-    [ExportCategory("CONFIGURATION:")] 
-    [Export] private float _hitBoxDistance = 1.0f;
+    [Export] private VolumetricSensor _attackSensor;
     
     private void PerformHit()
     {
@@ -17,7 +17,8 @@ public partial class Attack : Node
 
     private void PlaceHitBox()
     {
-        Vector3 newPosition = _characterNode.IsFacingLeft? Vector3.Left : Vector3.Right;
-        _characterNode.HitBox.Position = newPosition * _hitBoxDistance;
+        if (_attackSensor.DetectedBodies.Count == 0) return;
+        Node3D player = _attackSensor.DetectedBodies.First();
+        _characterNode.HitBox.GlobalPosition = player.GlobalPosition;
     }
 }
