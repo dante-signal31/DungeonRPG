@@ -4,48 +4,64 @@ using Godot;
 
 namespace DungeonRPG.Scripts.Characters;
 
-public partial class Character : CharacterBody3D
+public abstract partial class Character : CharacterBody3D
 {
+    
+    /// <summary>
+    /// Signal emitted when this character has been hit while fighting.
+    ///
+    /// Includes as a parameter the hitBox area of the character that hurt this one.
+    /// </summary>
+    [Signal] public delegate void BeenHitEventHandler(Area3D area);
+
+    [ExportCategory("WIRING:")] 
+    [Export] private CharacterLifeManager _lifeManager;
     [Export] public Hurtbox HurtBox { get; private set; }
     [Export] public Area3D HitBox { get; private set; }
-    [Export] private StatResource[] _statResources;
+    [Export] public StatResource[] StatResources { get; private set; }
+    
+    [ExportGroup("Combat behavior")]
+    [Export] public float CooldownTimeAfterAttack { get; private set; }
+    [Export] public float CooldownTimeAfterBeenHit { get; private set; }
 
+    /// <summary>
+    /// Strength of the character
+    /// </summary>
     public float Strength => GetStatResource(Stat.Strength).StatValue;
+
+    /// <summary>
+    /// Current health of the character
+    /// </summary>
+    public float Health
+    {
+        get => GetStatResource(Stat.Health).StatValue;
+        set => GetStatResource(Stat.Health).StatValue = Mathf.Clamp(value, 0, int.MaxValue);
+    }
 
     public override void _EnterTree()
     {
         base._EnterTree();
         HurtBox.AreaEntered += OnHurtBoxEntered;
+        _lifeManager.WeHaveBeenKilled += OnCharacterKilled;
     }
 
     public override void _ExitTree()
     {
         base._ExitTree();
         HurtBox.AreaEntered -= OnHurtBoxEntered;
+        _lifeManager.WeHaveBeenKilled -= OnCharacterKilled;
     }
 
     protected void OnHurtBoxEntered(Area3D area)
     {
-        float attackerStrength = GetAttackerStrength(area);
-        ApplyDamage(attackerStrength);
+        EmitSignal(SignalName.BeenHit, area);
     }
 
-    private float GetAttackerStrength(Area3D area)
-    {
-        Character attacker = area.GetOwner<Character>();
-        return attacker.Strength;
-    }
-
-    private void ApplyDamage(float damage)
-    {
-        StatResource health = GetStatResource(Stat.Health);
-        health.StatValue -= damage;
-        GD.Print($"[{Name}] Health: {health.StatValue}");
-    }
+    protected abstract void OnCharacterKilled();
 
     private StatResource GetStatResource(Stat stat)
     {
-        StatResource resource = _statResources.First(value => value.StatType == stat);
+        StatResource resource = StatResources.First(value => value.StatType == stat);
         return resource;
     }
 }

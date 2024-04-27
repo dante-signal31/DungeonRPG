@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://dkikm3mt5cqbo"]
+[gd_scene load_steps=22 format=3 uid="uid://dkikm3mt5cqbo"]
 
 [ext_resource type="Script" path="res://Scripts/Levels/Main.cs" id="1_vnkhn"]
 [ext_resource type="PackedScene" uid="uid://b3kf5tgnvffje" path="res://Scenes/Characters/Player/player.tscn" id="2_13q2o"]
 [ext_resource type="MeshLibrary" uid="uid://lfpsbpj5dsmk" path="res://Resources/tiles.tres" id="3_a8p5f"]
 [ext_resource type="PackedScene" uid="uid://e8ix2a3fj55f" path="res://Scenes/Characters/Enemy/enemy.tscn" id="4_t5duw"]
+[ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="5_6grem"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_nrp1r"]
 vertices = PackedVector3Array(14, 5.4, -21.5, 14.25, 5.4, -21.5, 14.75, 5.4, -22.75, 13.25, 5.4, -22.75, -4.75, 5.4, -37.25, -4.75, 5.4, -22.75, 13.25, 5.4, -22.75, 28.75, 5.4, -37.25, 14.75, 5.4, -22.75, 28.75, 5.4, -22.75, 28.75, 5.4, -37.25, 13.25, 5.4, -22.75, 14.75, 5.4, -22.75, 28.75, 5.4, -37.25, 14.75, 5.4, -20.25, 14.25, 5.4, -21.5, 14, 5.4, -21.5, 13.25, 5.4, -20.25, 15.75, 2.9, -16.5, 15.4167, 3.4, -17.75, 15.75, 2.9, -16.5, 13.25, 5.4, -20.25, 12.25, 5.4, -20.25, 12.25, 1.9, -15.25, 16, 1.9, -15.25, 15.75, 2.9, -16.5, 15.75, 5.4, -20.25, 14.75, 5.4, -20.25, 15.4167, 3.4, -17.75, 15.75, 3.4, -17.75, 12.25, 1.9, -15.25, 11.25, 1.4, -15, 11.25, 1.4, -6.75, 16.75, 1.4, -6.75, 16.75, 1.9, -15, 16, 1.9, -15.25, 35.25, 1.4, -7, 52.75, 1.4, -7, 52.75, 1.4, -21.25, 35.25, 1.4, -21.25, 34.25, 1.4, -5.25, 32.25, 1.4, -5.25, 32.25, 1.4, 9.25, 35.25, 1.4, -6.25, 34.25, 1.4, -5.25, 32.25, 1.4, 9.25, 52.75, 1.4, 9.25, 52.75, 1.4, -7, 52.75, 1.4, -7, 35.25, 1.4, -7, 35.25, 1.4, -6.25, 2, 1.4, 2.5, 2, 1.4, 2.75, 3.25, 1.4, 3.25, 3.25, 1.4, 1.75, 19.75, 1.4, 9.25, 19.75, 1.4, -5.25, 17.75, 1.4, -5.25, 17.75, 1.4, -5.25, 16.75, 1.4, -6.75, 11.25, 1.4, -6.75, 10.25, 1.4, -5.25, 10.25, 1.4, -5.25, 3.25, 1.4, 3.25, 3.25, 1.4, 9.25, 19.75, 1.4, 9.25, 17.75, 1.4, -5.25, 10.25, 1.4, -5.25, 3.25, 1.4, -5.25, 3.25, 1.4, 1.75, 10.25, 1.4, -5.25, 3.25, 1.4, 1.75, 3.25, 1.4, 3.25, 0.75, 1.4, 3.25, 2, 1.4, 2.75, 2, 1.4, 2.5, 0.75, 1.4, 3.25, 2, 1.4, 2.5, 0.75, 1.4, 1.75, -13.25, 1.4, -5.25, -13.25, 1.4, 9.25, -13.25, 1.4, 9.25, 0.75, 1.4, 9.25, 0.75, 1.4, 3.25, 0.75, 1.4, 1.75, 0.75, 1.4, -5.25, -13.25, 1.4, -5.25, 19.75, 1.4, 9.25, 32.25, 1.4, 9.25, 32.25, 1.4, -5.25, 19.75, 1.4, -5.25)
@@ -16,6 +17,26 @@ size = Vector3(2.69417, 5.87539, 0.900543)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hx6rx"]
 size = Vector3(5.932, 6.81548, 1.03766)
+
+[sub_resource type="Resource" id="Resource_o4ln5"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_545kn"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_lg7vb"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_nb3e7"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
 
 [sub_resource type="Curve3D" id="Curve3D_mx1il"]
 _data = {
@@ -138,34 +159,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.60742, 1.82862, 2.81301)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D")
 
 [node name="Enemy2" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5855, 1.81923, 3.33369)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D2")
+StatResources = Array[Object]([SubResource("Resource_o4ln5"), SubResource("Resource_545kn")])
 
 [node name="Enemy3" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6446, 1.79283, -7.43435)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D3")
 
 [node name="Enemy4" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.0758, 1.81923, 5.91217)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D5")
+StatResources = Array[Object]([SubResource("Resource_lg7vb"), SubResource("Resource_nb3e7")])
 
 [node name="Enemy5" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.54, 1.76631, -6.07947)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D6")
 
 [node name="Enemy6" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.0125, 1.81935, -9.29372)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D7")
 
 [node name="Enemy7" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.2722, 6.64146, -25.6294)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D8")
 
 [node name="Enemy8" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2716, 6.64146, -26.4948)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D9")
 
 [node name="Enemy9" parent="." node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3298, 6.66799, -26.4948)
 _patrolPath = NodePath("../EnemiesPatrolPaths/Path3D10")
 

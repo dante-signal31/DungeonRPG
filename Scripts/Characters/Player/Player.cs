@@ -17,11 +17,12 @@ public partial class Player : Character
     public bool IsFacingLeft { get; private set; }
     
     private Vector2 _direction = Vector2.Zero;
-    
     /// <summary>
     /// Current direction of this Character.
     /// </summary>
     public Vector2 Direction => _direction;
+    
+    private bool _playerIsDead = false;
 
     public override void _Input(InputEvent @event)
     {
@@ -39,5 +40,10 @@ public partial class Player : Character
             IsFacingLeft = _direction.X < 0;
             _spriteNode.FlipH = IsFacingLeft;
         }
+    }
+
+    protected override void OnCharacterKilled()
+    {
+        _playerIsDead = true;
     }
 }

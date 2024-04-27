@@ -94,6 +94,8 @@ public partial class Enemy : Characters.Character
     
     private EnemyStateMachine _stateMachine;
     private PatrolBehavior _patrolBehavior;
+    private bool _characterCanBeDisabled = false;
+    private bool _characterIsDead = false;
     
     public Vector3 Forward { get; private set; } = Vector3.Right;
     
@@ -109,6 +111,23 @@ public partial class Enemy : Characters.Character
         _patrolBehavior = GetNode<PatrolBehavior>("AI/Navigation/Patrol");
         _patrolBehavior.PatrolPath = _patrolPath;
         _stateMachine.DefaultState = DefaultState;
+        _stateMachine.DeathAnimationFinished += OnDeathAnimationFinished;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        _stateMachine.DeathAnimationFinished -= OnDeathAnimationFinished;
+    }
+
+    protected override void OnCharacterKilled()
+    {
+        _characterIsDead = true;
+    }
+
+    private void OnDeathAnimationFinished()
+    {
+        _characterCanBeDisabled = true;
     }
 
     public override void _Ready()
@@ -122,6 +141,11 @@ public partial class Enemy : Characters.Character
 
     public override void _Process(double delta)
     {
+        if (_characterCanBeDisabled && _characterIsDead)
+        {
+            QueueFree();
+        }
+        
         if (Velocity.X != 0)
         {
             IsFacingLeft = (Velocity.X < 0);

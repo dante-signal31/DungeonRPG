@@ -7,6 +7,10 @@ public class GameConstants
     public const string ANIM_MOVE = "Move";
     public const string ANIM_DASH = "Slide";
     public const string ANIM_ATTACK = "Attack";
+    public const string ANIM_TAKE_HIT = "TakeHit";
+    public const string ANIM_DEATH = "Death";
+    public const string ANIM_PURSUIT = "Pursuit";
+    public const string ANIM_PATROL = "Patrol";
     
     // Input.
     public const string INPUT_MOVE_LEFT = "MoveLeft";

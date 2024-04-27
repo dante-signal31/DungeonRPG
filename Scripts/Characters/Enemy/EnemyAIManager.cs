@@ -12,6 +12,7 @@ public partial class EnemyAIManager : Node
     [Export] private EnemyStateMachine _stateMachine;
     [Export] private NavigationAI _navigationAi;
     [Export] private AgentMover _agentMover;
+    [Export] private Combat _combat;
     [Export] private NavigationAgent3D _navigationAgent;
     [Export] private VolumetricSensor _pursuitSensor;
     [Export] private VolumetricSensor _attackSensor;
@@ -49,9 +50,10 @@ public partial class EnemyAIManager : Node
     public override void _PhysicsProcess(double delta)
     {
         if (PlayerAvailableToAttack &&
-            _stateMachine.CurrentState != EnemyStateMachine.EnemyStates.Attack)
+            // _stateMachine.CurrentState != EnemyStateMachine.EnemyStates.Attack &&
+            !_combat.PerformingAttack)
         {
-            _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Attack);
+            _combat.HitPlayer();
             return;
         }
             
@@ -66,8 +68,10 @@ public partial class EnemyAIManager : Node
                 _agentMover.TargetPosition = _navigationAi.NextPositionToReachTarget;
                 break;
             case EnemyStateMachine.EnemyStates.Attack:
-                if (_attackedPlayer != null)
-                    _characterNode.IsFacingLeft = (_attackedPlayer.GlobalPosition.X - _characterNode.GlobalPosition.X) < 0;
+                break;
+            case EnemyStateMachine.EnemyStates.TakeHit:
+                break;
+            case EnemyStateMachine.EnemyStates.Death:
                 break;
             default:
                 throw new NotImplementedException();

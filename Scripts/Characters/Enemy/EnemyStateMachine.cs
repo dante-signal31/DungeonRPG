@@ -12,6 +12,11 @@ public partial class EnemyStateMachine : AnimationTree
     /// </summary>
     [Signal] public delegate void StateChangedEventHandler(EnemyStates newState);
     
+    /// <summary>
+    /// Signal the death animation has finished.
+    /// </summary>
+    [Signal] public delegate void DeathAnimationFinishedEventHandler();
+    
     public enum EnemyStates
     {
         Idle,
@@ -112,16 +117,12 @@ public partial class EnemyStateMachine : AnimationTree
             _ => throw new Exception("Unknown state: " + state)
         };
         _stateMachine.Travel(newStateName);
+        // _stateMachine.Next();
         // There's a bug in Godot that prevents AnimationTree to emit AnimationStarted signal
         // when that animation loops. So I cannot rely on OnAnimationStarted() be called to emit
         // StateChanged signal. That's why I do it here manually.
         // https://github.com/godotengine/godot/issues/76159
         EmitSignal(SignalName.StateChanged, (int)state);
-    }
-    
-    public override void _EnterTree()
-    {
-        this.AnimationStarted += OnAnimationStarted;
     }
     
     public override void _Ready()
@@ -130,14 +131,27 @@ public partial class EnemyStateMachine : AnimationTree
         SwitchState(DefaultState);
     }
     
+    public override void _EnterTree()
+    {
+        this.AnimationStarted += OnAnimationStarted;
+        AnimationFinished += OnAnimationFinished;
+    }
+    
     public override void _ExitTree()
     {
         this.AnimationStarted -= OnAnimationStarted;
+        AnimationFinished -= OnAnimationFinished;
     }
 
     private void OnAnimationStarted(StringName name)
     {
         EnemyStates newState = StringToEnemyStates(name);
         EmitSignal(SignalName.StateChanged, (int)newState);
+    }
+
+    private void OnAnimationFinished(StringName animName)
+    {
+        if (animName == "Death")
+            EmitSignal(SignalName.DeathAnimationFinished);
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=150 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=151 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
@@ -103,6 +103,7 @@
 [ext_resource type="Texture2D" uid="uid://cpv3orkcn6rj1" path="res://Assets/Sprites/Characters/Enemy Knight/TakeHit/0_Demons_of_Darkness_Hurt_010.png" id="81_188u7"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/EnemyStateMachine.cs" id="100_2wao8"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/PatrolBehavior.cs" id="102_5piw0"]
+[ext_resource type="Script" path="res://Scripts/Characters/Enemy/EnemyLifeManager.cs" id="102_i4wmb"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/NavigationAI.cs" id="102_r8ntr"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/EnemyAIManager.cs" id="102_s3qvr"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/PursuitBehavior.cs" id="104_sigy7"]
@@ -113,15 +114,15 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Attack.cs" id="109_5tvnf"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Combat.cs" id="109_makhg"]
 
-[sub_resource type="Resource" id="Resource_t5cvc"]
+[sub_resource type="Resource" id="Resource_hr7af"]
 script = ExtResource("2_545la")
 StatType = 0
-StatValue = 20.0
+StatValue = 30.0
 
-[sub_resource type="Resource" id="Resource_564xx"]
+[sub_resource type="Resource" id="Resource_adodp"]
 script = ExtResource("2_545la")
 StatType = 1
-StatValue = 4.0
+StatValue = 5.0
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
@@ -288,6 +289,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("71_7clxb"), ExtResource("72_1emdu"), ExtResource("73_d31so"), ExtResource("74_t4vxc"), ExtResource("75_fyr51"), ExtResource("76_sjrh1"), ExtResource("77_bpeku"), ExtResource("78_vam4h"), ExtResource("79_hi14n"), ExtResource("80_2320n"), ExtResource("81_188u7"), ExtResource("1_tolbi")]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape3D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2i6rb"]
 _data = {
@@ -330,9 +343,9 @@ animation = &"TakeHit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_regn1"]
 switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oqf4v"]
-switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uuocf"]
 switch_mode = 2
@@ -374,7 +387,7 @@ states/Start/position = Vector2(154, 176)
 states/TakeHit/node = SubResource("AnimationNodeAnimation_e3qrg")
 states/TakeHit/position = Vector2(815, 202)
 transitions = ["Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_eoob4"), "Idle", "TakeHit", SubResource("AnimationNodeStateMachineTransition_6glet"), "Attack", "TakeHit", SubResource("AnimationNodeStateMachineTransition_f1q0i"), "TakeHit", "Idle", SubResource("AnimationNodeStateMachineTransition_regn1"), "TakeHit", "Death", SubResource("AnimationNodeStateMachineTransition_oqf4v"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_uuocf"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_pkpd0"), "Death", "End", SubResource("AnimationNodeStateMachineTransition_ruwds"), "Idle", "Patrol", SubResource("AnimationNodeStateMachineTransition_ff0b4"), "Pursuit", "Attack", SubResource("AnimationNodeStateMachineTransition_2myxi"), "Attack", "Pursuit", SubResource("AnimationNodeStateMachineTransition_wej8v"), "Patrol", "Idle", SubResource("AnimationNodeStateMachineTransition_nv4y2"), "Idle", "Pursuit", SubResource("AnimationNodeStateMachineTransition_v2cjw"), "Pursuit", "Idle", SubResource("AnimationNodeStateMachineTransition_2ef5r")]
-graph_offset = Vector2(84.728, -14.9752)
+graph_offset = Vector2(114.641, -14.9752)
 
 [sub_resource type="Curve" id="Curve_r3vma"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.823529, 0.450151), -1.78046, -1.78046, 0, 0, Vector2(1, 0.00830817), -2.81126, 0.0, 0, 0]
@@ -395,7 +408,7 @@ radius = 1.00283
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover", "HurtBox", "HitBox")]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover", "_lifeManager", "HurtBox", "HitBox")]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_7y2ff")
@@ -407,14 +420,16 @@ StopSpeed = 0.2
 MaximumRotationalSpeed = 1.0
 MaximumAcceleration = 1.0
 MaximumDeceleration = 1.0
+_lifeManager = NodePath("LifeManager")
 HurtBox = NodePath("Hurtbox")
 HitBox = NodePath("Hitbox")
-_statResources = Array[Object]([SubResource("Resource_t5cvc"), SubResource("Resource_564xx")])
+StatResources = Array[Object]([SubResource("Resource_hr7af"), SubResource("Resource_adodp")])
+CooldownTimeAfterBeenHit = 1.5
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("46_rhs1c")
+texture = ExtResource("45_vdm62")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -437,12 +452,18 @@ radius = 1.0
 time_horizon_agents = 1.97
 debug_enabled = true
 
-[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterNode", "_stateMachine", "_navigationAi", "_agentMover", "_navigationAgent", "_pursuitSensor", "_attackSensor")]
+[node name="LifeManager" type="Node" parent="." node_paths=PackedStringArray("_stateMachine", "_characterNode")]
+script = ExtResource("102_i4wmb")
+_stateMachine = NodePath("../StateMachine")
+_characterNode = NodePath("..")
+
+[node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterNode", "_stateMachine", "_navigationAi", "_agentMover", "_combat", "_navigationAgent", "_pursuitSensor", "_attackSensor")]
 script = ExtResource("102_s3qvr")
 _characterNode = NodePath("..")
 _stateMachine = NodePath("../StateMachine")
 _navigationAi = NodePath("Navigation")
 _agentMover = NodePath("Movement")
+_combat = NodePath("Combat")
 _navigationAgent = NodePath("../NavigationAgent3D")
 _pursuitSensor = NodePath("../PursuitSensor")
 _attackSensor = NodePath("../AttackSensor")
@@ -480,16 +501,22 @@ _decelerationCurve = SubResource("Curve_r3vma")
 _accelerationRadius = 1.0
 _accelerationCurve = SubResource("Curve_sf4pv")
 
-[node name="Combat" type="Node" parent="AI" node_paths=PackedStringArray("_characterNode", "_attackSensor", "_stateMachine")]
+[node name="Combat" type="Node" parent="AI" node_paths=PackedStringArray("_characterNode", "_attackSensor", "_stateMachine", "_attackCoolDownTimer", "_beenHitCoolDownTimer")]
 script = ExtResource("109_makhg")
 _characterNode = NodePath("../..")
 _attackSensor = NodePath("../../AttackSensor")
 _stateMachine = NodePath("../../StateMachine")
+_attackCoolDownTimer = NodePath("AttackCooldownTimer")
+_beenHitCoolDownTimer = NodePath("BeenHitCooldownTimer")
 
 [node name="Attack" type="Node" parent="AI/Combat" node_paths=PackedStringArray("_characterNode", "_attackSensor")]
 script = ExtResource("109_5tvnf")
 _characterNode = NodePath("../../..")
 _attackSensor = NodePath("../../../AttackSensor")
+
+[node name="AttackCooldownTimer" type="Timer" parent="AI/Combat"]
+
+[node name="BeenHitCooldownTimer" type="Timer" parent="AI/Combat"]
 
 [node name="PursuitSensor" parent="." instance=ExtResource("108_wfnqb")]
 DetectedLayers = 2
