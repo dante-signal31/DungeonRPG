@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DungeonRPG.Scripts.General;
 using DungeonRPG.Scripts.Resources;
 using Godot;
 
@@ -18,5 +19,6 @@ public partial class EnemyLifeManager : CharacterLifeManager
     {
         _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Death);
         EmitSignal(SignalName.WeHaveBeenKilled);
+        GameEvents.RaiseEnemyDied();
     }
 }

@@ -16,5 +16,7 @@ public partial class PlayerLifeManager : CharacterLifeManager
     protected override void CharacterKilled()
     {
         _stateMachine.SwitchState<PlayerDeathState>();
+
+        GameEvents.RaiseGameEnded();
     }
 }

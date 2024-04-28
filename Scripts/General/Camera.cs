@@ -11,16 +11,23 @@ public partial class Camera : Camera3D
     public override void _EnterTree()
     {
         GameEvents.GameStartedEvent += OnGameStarted;
+        GameEvents.GameEndedEvent += OnGameEnded;
     }
 
     public override void _ExitTree()
     {
         GameEvents.GameStartedEvent += OnGameStarted;
+        GameEvents.GameEndedEvent -= OnGameEnded;
     }
 
     private void OnGameStarted(object sender, EventArgs _)
     {
         Reparent(_target);
         Position = positionFromTarget;
+    }
+    
+    private void OnGameEnded(object sender, EventArgs e)
+    {
+        Reparent(GetTree().Root);
     }
 }

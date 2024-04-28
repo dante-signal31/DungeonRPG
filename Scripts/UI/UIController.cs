@@ -30,6 +30,7 @@ public partial class UIController : Control
     {
         GetTree().Paused = false;
         _containers[ContainerType.Start].Visible = false;
+        _containers[ContainerType.Stats].Visible = true;
         GameEvents.RaiseGameStarted();
     }
 }

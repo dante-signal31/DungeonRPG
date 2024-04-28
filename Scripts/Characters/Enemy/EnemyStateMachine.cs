@@ -116,7 +116,7 @@ public partial class EnemyStateMachine : AnimationTree
             EnemyStates.Death => "Death",
             _ => throw new Exception("Unknown state: " + state)
         };
-        _stateMachine.Travel(newStateName);
+       _stateMachine.Travel(newStateName);
         // _stateMachine.Next();
         // There's a bug in Godot that prevents AnimationTree to emit AnimationStarted signal
         // when that animation loops. So I cannot rely on OnAnimationStarted() be called to emit

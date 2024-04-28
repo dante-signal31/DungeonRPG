@@ -1,12 +1,13 @@
-[gd_scene load_steps=97 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=96 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
-[ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="2_8nuca"]
 [ext_resource type="Texture2D" uid="uid://c4gbvlwmeygjd" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_005.png" id="2_40kcw"]
+[ext_resource type="Resource" uid="uid://cxkc1a24ldgym" path="res://Resources/player_health_stat.tres" id="2_41pki"]
 [ext_resource type="Texture2D" uid="uid://bk2skb4hkbft2" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_000.png" id="2_lhik7"]
 [ext_resource type="Texture2D" uid="uid://c70rg8vplek1s" path="res://Assets/Sprites/Characters/Player/Kicking/Kicking_011.png" id="2_olq6i"]
 [ext_resource type="Texture2D" uid="uid://b3k3xuiftlcey" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_001.png" id="3_47wpy"]
+[ext_resource type="Resource" uid="uid://w7w8bu6wq2mr" path="res://Resources/player_strength_stat.tres" id="3_mvgqt"]
 [ext_resource type="Texture2D" uid="uid://dy1cnaube1v5w" path="res://Assets/Sprites/Characters/Player/Dying/Dying_014.png" id="3_p4r6r"]
 [ext_resource type="Texture2D" uid="uid://hkaga2bm51al" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_002.png" id="4_imuhp"]
 [ext_resource type="Texture2D" uid="uid://dl4nrun6eejd1" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_003.png" id="5_3rodu"]
@@ -85,16 +86,6 @@
 [ext_resource type="Texture2D" uid="uid://cixp8lf0ka3ft" path="res://Assets/Sprites/Characters/Player/Dying/Dying_012.png" id="76_6ot5o"]
 [ext_resource type="Texture2D" uid="uid://dboj3m7gr1tkw" path="res://Assets/Sprites/Characters/Player/Dying/Dying_013.png" id="77_mmq17"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerDeathState.cs" id="84_8v8kw"]
-
-[sub_resource type="Resource" id="Resource_n86it"]
-script = ExtResource("2_8nuca")
-StatType = 0
-StatValue = 100.0
-
-[sub_resource type="Resource" id="Resource_8o2um"]
-script = ExtResource("2_8nuca")
-StatType = 1
-StatValue = 10.0
 
 [sub_resource type="Animation" id="Animation_ydqwq"]
 resource_name = "Attack1"
@@ -180,6 +171,22 @@ tracks/2/keys = {
 "values": [false, true]
 }
 
+[sub_resource type="Animation" id="Animation_oviaj"]
+resource_name = "Death"
+step = 0.0666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.333333, 0.4, 0.466667, 0.533333, 0.6, 0.666667, 0.733333, 0.8, 0.866667, 0.933333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("64_hxbtu"), ExtResource("65_70epu"), ExtResource("66_4w4s2"), ExtResource("67_5yuji"), ExtResource("68_2npmf"), ExtResource("69_awf0o"), ExtResource("70_6nhm1"), ExtResource("71_agee1"), ExtResource("72_kfw7j"), ExtResource("73_cddb8"), ExtResource("74_um8uv"), ExtResource("75_f8ywh"), ExtResource("76_6ot5o"), ExtResource("77_mmq17"), ExtResource("3_p4r6r")]
+}
+
 [sub_resource type="Animation" id="Animation_gr0dg"]
 resource_name = "Idle"
 length = 1.00001
@@ -231,22 +238,6 @@ tracks/0/keys = {
 "values": [ExtResource("33_qu3ob"), ExtResource("34_ues0c"), ExtResource("35_ebha0"), ExtResource("36_ns12a"), ExtResource("37_h34fb"), ExtResource("2_40kcw")]
 }
 
-[sub_resource type="Animation" id="Animation_oviaj"]
-resource_name = "Death"
-step = 0.0666667
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.333333, 0.4, 0.466667, 0.533333, 0.6, 0.666667, 0.733333, 0.8, 0.866667, 0.933333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [ExtResource("64_hxbtu"), ExtResource("65_70epu"), ExtResource("66_4w4s2"), ExtResource("67_5yuji"), ExtResource("68_2npmf"), ExtResource("69_awf0o"), ExtResource("70_6nhm1"), ExtResource("71_agee1"), ExtResource("72_kfw7j"), ExtResource("73_cddb8"), ExtResource("74_um8uv"), ExtResource("75_f8ywh"), ExtResource("76_6ot5o"), ExtResource("77_mmq17"), ExtResource("3_p4r6r")]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8fnrs"]
 _data = {
 "Attack1": SubResource("Animation_ydqwq"),
@@ -275,7 +266,7 @@ StateMachine = NodePath("StateMachine")
 _lifeManager = NodePath("LifeManager")
 HurtBox = NodePath("Hurtbox")
 HitBox = NodePath("Hitbox")
-StatResources = Array[Object]([SubResource("Resource_n86it"), SubResource("Resource_8o2um")])
+StatResources = Array[Object]([ExtResource("2_41pki"), ExtResource("3_mvgqt")])
 CooldownTimeAfterAttack = 0.3
 CooldownTimeAfterBeenHit = 1.0
 

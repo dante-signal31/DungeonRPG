@@ -69,7 +69,6 @@ public partial class Combat : Node
                 _attackCoolDownTimer.Start();
                 break;
             case GameConstants.ANIM_TAKE_HIT:
-                _isTakingHit = false;
                 _coolingDownAfterHit = true;
                 _beenHitCoolDownTimer.Start();
                 break;

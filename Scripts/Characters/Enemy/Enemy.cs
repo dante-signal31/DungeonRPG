@@ -1,3 +1,4 @@
+using DungeonRPG.Scripts.General;
 using DungeonRPG.Scripts.Sensors;
 using Godot;
 

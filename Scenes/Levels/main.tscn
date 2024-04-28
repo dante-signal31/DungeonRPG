@@ -1,8 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://dkikm3mt5cqbo"]
+[gd_scene load_steps=41 format=3 uid="uid://dkikm3mt5cqbo"]
 
 [ext_resource type="Script" path="res://Scripts/Levels/Main.cs" id="1_vnkhn"]
 [ext_resource type="PackedScene" uid="uid://b3kf5tgnvffje" path="res://Scenes/Characters/Player/player.tscn" id="2_13q2o"]
 [ext_resource type="MeshLibrary" uid="uid://lfpsbpj5dsmk" path="res://Resources/tiles.tres" id="3_a8p5f"]
+[ext_resource type="Script" path="res://Scripts/Characters/Enemy/EnemiesContainer.cs" id="4_3u1hw"]
 [ext_resource type="PackedScene" uid="uid://e8ix2a3fj55f" path="res://Scenes/Characters/Enemy/enemy.tscn" id="4_t5duw"]
 [ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="5_6grem"]
 [ext_resource type="PackedScene" uid="uid://cubqtv4xncaux" path="res://Scenes/General/ui.tscn" id="6_mtla0"]
@@ -20,22 +21,102 @@ size = Vector3(2.69417, 5.87539, 0.900543)
 [sub_resource type="BoxShape3D" id="BoxShape3D_hx6rx"]
 size = Vector3(5.932, 6.81548, 1.03766)
 
-[sub_resource type="Resource" id="Resource_o4ln5"]
+[sub_resource type="Resource" id="Resource_ecla6"]
 script = ExtResource("5_6grem")
 StatType = 0
 StatValue = 30.0
 
-[sub_resource type="Resource" id="Resource_545kn"]
+[sub_resource type="Resource" id="Resource_n6b0b"]
 script = ExtResource("5_6grem")
 StatType = 1
 StatValue = 5.0
 
-[sub_resource type="Resource" id="Resource_lg7vb"]
+[sub_resource type="Resource" id="Resource_sxp1a"]
 script = ExtResource("5_6grem")
 StatType = 0
 StatValue = 30.0
 
-[sub_resource type="Resource" id="Resource_nb3e7"]
+[sub_resource type="Resource" id="Resource_sshvr"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_o8lp6"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_ii5e2"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_nkf2u"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_t135a"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_8qrjl"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_6gnyi"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_1y2w1"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_f1dxj"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_gawku"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_l3fvv"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_0yfk7"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_gibyo"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_0v5sj"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_6xbnh"]
+script = ExtResource("5_6grem")
+StatType = 1
+StatValue = 5.0
+
+[sub_resource type="Resource" id="Resource_6qm7c"]
+script = ExtResource("5_6grem")
+StatType = 0
+StatValue = 30.0
+
+[sub_resource type="Resource" id="Resource_vbhoh"]
 script = ExtResource("5_6grem")
 StatType = 1
 StatValue = 5.0
@@ -157,55 +238,57 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01784, 2.16927, -0.0793152
 shape = SubResource("BoxShape3D_hx6rx")
 
 [node name="Enemies" type="Node" parent="."]
+script = ExtResource("4_3u1hw")
 
 [node name="Enemy" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.60742, 1.82862, 2.81301)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D")
+StatResources = Array[Object]([SubResource("Resource_ecla6"), SubResource("Resource_n6b0b")])
 
 [node name="Enemy2" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5855, 1.81923, 3.33369)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D2")
-StatResources = Array[Object]([SubResource("Resource_o4ln5"), SubResource("Resource_545kn")])
+StatResources = Array[Object]([SubResource("Resource_sxp1a"), SubResource("Resource_sshvr")])
 
 [node name="Enemy3" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6446, 1.79283, -7.43435)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D3")
+StatResources = Array[Object]([SubResource("Resource_o8lp6"), SubResource("Resource_ii5e2")])
 
 [node name="Enemy4" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.0758, 1.81923, 5.91217)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D5")
-StatResources = Array[Object]([SubResource("Resource_lg7vb"), SubResource("Resource_nb3e7")])
+StatResources = Array[Object]([SubResource("Resource_nkf2u"), SubResource("Resource_t135a")])
 
 [node name="Enemy5" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.54, 1.76631, -6.07947)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D6")
+StatResources = Array[Object]([SubResource("Resource_8qrjl"), SubResource("Resource_6gnyi")])
 
 [node name="Enemy6" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.0125, 1.81935, -9.29372)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D7")
+StatResources = Array[Object]([SubResource("Resource_1y2w1"), SubResource("Resource_f1dxj")])
 
 [node name="Enemy7" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.2722, 6.64146, -25.6294)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D8")
+StatResources = Array[Object]([SubResource("Resource_gawku"), SubResource("Resource_l3fvv")])
 
 [node name="Enemy8" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2716, 6.64146, -26.4948)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D9")
+StatResources = Array[Object]([SubResource("Resource_0yfk7"), SubResource("Resource_gibyo")])
 
 [node name="Enemy9" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
-process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3298, 6.66799, -26.4948)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D10")
+StatResources = Array[Object]([SubResource("Resource_0v5sj"), SubResource("Resource_6xbnh")])
 
 [node name="Enemy10" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.0645, 2.001, -17.6503)
 _patrolPath = NodePath("../../EnemiesPatrolPaths/Path3D6")
+StatResources = Array[Object]([SubResource("Resource_6qm7c"), SubResource("Resource_vbhoh")])
 
 [node name="EnemiesPatrolPaths" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25256, 0)
