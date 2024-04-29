@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://diy5fs72nvfat"
-path.s3tc="res://.godot/imported/UI ElementUI 7.png-4abc697745b82b609284911464068597.s3tc.ctex"
+path="res://.godot/imported/UI ElementUI 7.png-4abc697745b82b609284911464068597.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/Sprites/UI/UI ElementUI 7.png"
-dest_files=["res://.godot/imported/UI ElementUI 7.png-4abc697745b82b609284911464068597.s3tc.ctex"]
+dest_files=["res://.godot/imported/UI ElementUI 7.png-4abc697745b82b609284911464068597.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

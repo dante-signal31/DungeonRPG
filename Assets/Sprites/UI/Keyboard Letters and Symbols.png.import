@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0r281fnx2grc"
-path.s3tc="res://.godot/imported/Keyboard Letters and Symbols.png-14f537deca5e708355071d087adb6bcd.s3tc.ctex"
+path="res://.godot/imported/Keyboard Letters and Symbols.png-14f537deca5e708355071d087adb6bcd.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/Sprites/UI/Keyboard Letters and Symbols.png"
-dest_files=["res://.godot/imported/Keyboard Letters and Symbols.png-14f537deca5e708355071d087adb6bcd.s3tc.ctex"]
+dest_files=["res://.godot/imported/Keyboard Letters and Symbols.png-14f537deca5e708355071d087adb6bcd.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
