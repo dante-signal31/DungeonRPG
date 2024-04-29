@@ -17,6 +17,6 @@ public partial class PlayerLifeManager : CharacterLifeManager
     {
         _stateMachine.SwitchState<PlayerDeathState>();
 
-        GameEvents.RaiseGameEnded();
+        GameEvents.RaiseGameEnded(isPlayerVictory: false);
     }
 }

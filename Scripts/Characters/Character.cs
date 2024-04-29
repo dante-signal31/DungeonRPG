@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DungeonRPG.Scripts.General;
 using DungeonRPG.Scripts.Resources;
 using Godot;
 
@@ -43,6 +44,7 @@ public abstract partial class Character : CharacterBody3D
         base._EnterTree();
         HurtBox.AreaEntered += OnHurtBoxEntered;
         _lifeManager.WeHaveBeenKilled += OnCharacterKilled;
+        
     }
 
     public override void _ExitTree()
@@ -59,7 +61,7 @@ public abstract partial class Character : CharacterBody3D
 
     protected abstract void OnCharacterKilled();
 
-    private StatResource GetStatResource(Stat stat)
+    protected StatResource GetStatResource(Stat stat)
     {
         StatResource resource = StatResources.First(value => value.StatType == stat);
         return resource;

@@ -257,8 +257,10 @@ size = Vector3(0.5, 0.5, 0.5)
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "_spriteNode", "StateMachine", "_lifeManager", "HurtBox", "HitBox")]
 collision_layer = 2
-floor_max_angle = 1.48353
-floor_snap_length = 0.2
+collision_mask = 5
+floor_block_on_wall = false
+floor_max_angle = 3.11192
+platform_floor_layers = 4294901761
 script = ExtResource("1_6euok")
 AnimationPlayer = NodePath("AnimationPlayer")
 _spriteNode = NodePath("Sprite3D")
@@ -273,7 +275,7 @@ CooldownTimeAfterBeenHit = 1.0
 [node name="Sprite3D" type="Sprite3D" parent="."]
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("3_p4r6r")
+texture = ExtResource("4_imuhp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -326,7 +328,7 @@ shape = SubResource("BoxShape3D_pssd2")
 disabled = true
 
 [node name="Hurtbox" type="Area3D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 4
 script = ExtResource("67_xl0sd")
 

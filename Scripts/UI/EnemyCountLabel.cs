@@ -17,7 +17,7 @@ public partial class EnemyCountLabel : Label
                 GameEvents.NumberOfEnemiesChangedEvent -= OnNumberOfEnemiesChanged;
         }
 
-        private void OnNumberOfEnemiesChanged(object sender, GameEvents.IntEventArgs e)
+        private void OnNumberOfEnemiesChanged(object sender, IntEventArgs e)
         {
                 Text = e.Value.ToString();
         }

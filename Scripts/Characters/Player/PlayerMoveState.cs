@@ -19,8 +19,8 @@ public partial class PlayerMoveState : PlayerState
         _characterNode.Velocity = new Vector3(_characterNode.Direction.X, 
             0, _characterNode.Direction.Y);
         _characterNode.Velocity *= _speed;
-        _characterNode.MoveAndSlide();
         _characterNode.Flip();
+        _characterNode.MoveAndSlide();
     }
 
     public override void _Input(InputEvent @event)

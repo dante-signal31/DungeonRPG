@@ -1,5 +1,6 @@
 using DungeonRPG.Scripts.Characters.Enemy;
 using DungeonRPG.Scripts.General;
+using DungeonRPG.Scripts.Resources;
 using Godot;
 
 namespace DungeonRPG.Scripts.Characters.Player;
@@ -23,6 +24,24 @@ public partial class Player : Character
     public Vector2 Direction => _direction;
     
     private bool _playerIsDead = false;
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        GameEvents.RewardGotEvent += OnRewardGot;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        GameEvents.RewardGotEvent -= OnRewardGot;
+    }
+    
+    private void OnRewardGot(object sender, RewardGotEventArgs e)
+    {
+        StatResource statResource = GetStatResource(e.Reward.TargetStat);
+        statResource.StatValue += e.Reward.Amount;
+    }
 
     public override void _Input(InputEvent @event)
     {
