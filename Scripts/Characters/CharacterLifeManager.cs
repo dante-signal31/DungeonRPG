@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DungeonRPG.Scripts.Abilities;
 using DungeonRPG.Scripts.Resources;
 using Godot;
 
@@ -28,8 +29,8 @@ public abstract partial class CharacterLifeManager : Node
     
     protected float GetAttackerStrength(Area3D area)
     {
-        Character attacker = area.GetOwner<Character>();
-        return attacker.Strength;
+        IDamager attacker = area.GetOwner<IDamager>();
+        return attacker.Damage;
     }
 
     protected virtual void ApplyDamage(float damage)

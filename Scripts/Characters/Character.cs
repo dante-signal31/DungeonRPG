@@ -5,7 +5,7 @@ using Godot;
 
 namespace DungeonRPG.Scripts.Characters;
 
-public abstract partial class Character : CharacterBody3D
+public abstract partial class Character : CharacterBody3D, IDamager
 {
     
     /// <summary>
@@ -66,4 +66,6 @@ public abstract partial class Character : CharacterBody3D
         StatResource resource = StatResources.First(value => value.StatType == stat);
         return resource;
     }
+
+    public float Damage => Strength;
 }

@@ -7,6 +7,7 @@ public partial class PlayerDashState: PlayerState
 {
     [Export] private Timer _dashTimerNode;
     [Export(PropertyHint.Range, "0, 20, 0.1")] private float _speed = 10.0f;
+    [Export] private PackedScene _bombScene;
     
     
     public override void _Ready()
@@ -18,6 +19,9 @@ public partial class PlayerDashState: PlayerState
     protected override void EnterState()
     {
         _characterNode.AnimationPlayer.Play(GameConstants.ANIM_DASH);
+        Node3D bomb = _bombScene.Instantiate<Node3D>();
+        GetTree().CurrentScene.AddChild(bomb);
+        bomb.GlobalPosition = _characterNode.GlobalPosition;
     }
 
     protected override void ExitState()

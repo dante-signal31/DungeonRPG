@@ -268,7 +268,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01784, 2.16927, 0.147945)
 shape = SubResource("BoxShape3D_v5o3a")
 
 [node name="Enemies" type="Node" parent="."]
-process_mode = 4
 script = ExtResource("4_3u1hw")
 
 [node name="Enemy" parent="Enemies" node_paths=PackedStringArray("_patrolPath") instance=ExtResource("4_t5duw")]
