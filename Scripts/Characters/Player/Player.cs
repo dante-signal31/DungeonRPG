@@ -7,9 +7,8 @@ namespace DungeonRPG.Scripts.Characters.Player;
 
 public partial class Player : Character
 {
-    [ExportGroup("Required Nodes")]
+    [ExportGroup("WIRING:")]
     [Export] public AnimationPlayer AnimationPlayer { get; private set; }
-    [Export] private Sprite3D _spriteNode;
     [Export] public StateMachine StateMachine { get; private set; }
     
     /// <summary>

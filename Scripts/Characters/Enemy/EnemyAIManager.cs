@@ -20,9 +20,17 @@ public partial class EnemyAIManager : Node
     [ExportCategory("CONFIGURATION:")]
     [Export] private float _arrivingRadius;
     
-    private Player.Player _attackedPlayer;
-    
-    private bool PlayerAvailableToAttack => _attackedPlayer != null;
+    private Player.Player AttackedPlayer
+    {
+        get
+        {
+            if (PlayerAvailableToAttack)
+                return (Player.Player)_attackSensor.DetectedBodies.First();
+            return null;
+        }
+    }
+
+    private bool PlayerAvailableToAttack => _attackSensor.DetectedBodies.Count > 0;
 
     public override void _EnterTree()
     {
@@ -50,7 +58,6 @@ public partial class EnemyAIManager : Node
     public override void _PhysicsProcess(double delta)
     {
         if (PlayerAvailableToAttack &&
-            // _stateMachine.CurrentState != EnemyStateMachine.EnemyStates.Attack &&
             !_combat.PerformingAttack)
         {
             _combat.HitPlayer();
@@ -91,7 +98,7 @@ public partial class EnemyAIManager : Node
     private void OnPlayerDetectedInAttackRange(Node3D body)
     {
         // _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Attack);
-        _attackedPlayer = (Player.Player) body;
+        // AttackedPlayer = (Player.Player) body;
     }
     
     private void OnPlayerExitedOfAttackRange(Node3D body)
@@ -104,6 +111,5 @@ public partial class EnemyAIManager : Node
         {
             _stateMachine.SwitchState(_stateMachine.DefaultState);
         }
-        _attackedPlayer = null;
     }
 }

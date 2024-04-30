@@ -27,6 +27,7 @@ public partial class Combat : Node
     public override void _EnterTree()
     {
         _stateMachine.AnimationFinished += OnAnimationEnded;
+        _stateMachine.AnimationStarted += OnAnimationStarted;
         _characterNode.BeenHit += OnBeenHit;
         _attackCoolDownTimer.Timeout += OnAttackCoolDownTimerTimeout;
         _beenHitCoolDownTimer.Timeout += OnBeenHitCoolDownTimerTimeout;
@@ -35,11 +36,24 @@ public partial class Combat : Node
     public override void _ExitTree()
     {
         _stateMachine.AnimationFinished -= OnAnimationEnded;
+        _stateMachine.AnimationStarted -= OnAnimationStarted;
         _characterNode.BeenHit -= OnBeenHit;
         _attackCoolDownTimer.Timeout -= OnAttackCoolDownTimerTimeout;
         _beenHitCoolDownTimer.Timeout -= OnBeenHitCoolDownTimerTimeout;
     }
-    
+
+    private void OnAnimationStarted(StringName animname)
+    {
+        if (animname == GameConstants.ANIM_ATTACK)
+        {
+            PerformingAttack = true;
+        }
+        else
+        {
+            PerformingAttack = false;
+        }
+    }
+
     private void OnAttackCoolDownTimerTimeout()
     {
         _coolingDownAfterAttack = false;
@@ -70,6 +84,7 @@ public partial class Combat : Node
                 break;
             case GameConstants.ANIM_TAKE_HIT:
                 _coolingDownAfterHit = true;
+                _isTakingHit = false;
                 _beenHitCoolDownTimer.Start();
                 break;
         }
@@ -83,9 +98,9 @@ public partial class Combat : Node
     public void HitPlayer()
     {
         if (!PerformingAttack && !_isTakingHit && 
-            !_coolingDownAfterHit && !_coolingDownAfterAttack!)
+            !_coolingDownAfterHit && !_coolingDownAfterAttack)
         {
-            PerformingAttack = true; 
+            // PerformingAttack = true; 
             _stateMachine.SwitchState(EnemyStateMachine.EnemyStates.Attack);
         }
     }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=98 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=100 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://w7w8bu6wq2mr" path="res://Resources/player_strength_stat.tres" id="3_mvgqt"]
 [ext_resource type="Texture2D" uid="uid://dy1cnaube1v5w" path="res://Assets/Sprites/Characters/Player/Dying/Dying_014.png" id="3_p4r6r"]
 [ext_resource type="Texture2D" uid="uid://hkaga2bm51al" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_002.png" id="4_imuhp"]
+[ext_resource type="Shader" path="res://Shaders/character_hurt.gdshader" id="4_lfuo5"]
 [ext_resource type="Texture2D" uid="uid://dl4nrun6eejd1" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_003.png" id="5_3rodu"]
 [ext_resource type="Texture2D" uid="uid://d38hyh1l02xn6" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_004.png" id="6_hxxbd"]
 [ext_resource type="Texture2D" uid="uid://csx7ogcd5m63l" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_005.png" id="7_rfqiv"]
@@ -88,6 +89,13 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerDeathState.cs" id="84_8v8kw"]
 [ext_resource type="PackedScene" uid="uid://c6sfu6y54jq45" path="res://Scenes/Abilities/bomb.tscn" id="84_qcyi2"]
 [ext_resource type="PackedScene" uid="uid://bt3k8kmxqqy6m" path="res://Scenes/Abilities/lightning.tscn" id="86_bvqm7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fsu2d"]
+render_priority = 1
+shader = ExtResource("4_lfuo5")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(0.996078, 1, 1, 1)
+shader_parameter/tex = ExtResource("4_imuhp")
 
 [sub_resource type="Animation" id="Animation_ydqwq"]
 resource_name = "Attack1"
@@ -257,7 +265,7 @@ height = 1.39603
 [sub_resource type="BoxShape3D" id="BoxShape3D_pssd2"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "_spriteNode", "StateMachine", "_lifeManager", "HurtBox", "HitBox")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "StateMachine", "_spriteNode", "_lifeManager", "HurtBox", "HitBox")]
 collision_layer = 2
 collision_mask = 5
 floor_block_on_wall = false
@@ -265,8 +273,8 @@ floor_max_angle = 3.11192
 platform_floor_layers = 4294901761
 script = ExtResource("1_6euok")
 AnimationPlayer = NodePath("AnimationPlayer")
-_spriteNode = NodePath("Sprite3D")
 StateMachine = NodePath("StateMachine")
+_spriteNode = NodePath("Sprite3D")
 _lifeManager = NodePath("LifeManager")
 HurtBox = NodePath("Hurtbox")
 HitBox = NodePath("Hitbox")
@@ -275,6 +283,7 @@ CooldownTimeAfterAttack = 0.3
 CooldownTimeAfterBeenHit = 1.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+material_overlay = SubResource("ShaderMaterial_fsu2d")
 pixel_size = 0.0025
 texture_filter = 0
 texture = ExtResource("4_imuhp")
@@ -284,10 +293,16 @@ libraries = {
 "": SubResource("AnimationLibrary_8fnrs")
 }
 
-[node name="LifeManager" type="Node" parent="." node_paths=PackedStringArray("_stateMachine", "_characterNode")]
+[node name="LifeManager" type="Node" parent="." node_paths=PackedStringArray("_stateMachine", "_spriteNode", "_hitTimer", "_characterNode")]
 script = ExtResource("63_8wqjv")
 _stateMachine = NodePath("../StateMachine")
+_spriteNode = NodePath("../Sprite3D")
+_hitTimer = NodePath("ShaderTimer")
+_hitTime = 0.25
 _characterNode = NodePath("..")
+
+[node name="ShaderTimer" type="Timer" parent="LifeManager"]
+one_shot = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_currentState", "_states")]
 script = ExtResource("34_cd0h6")
@@ -316,6 +331,7 @@ _lightningScene = ExtResource("86_bvqm7")
 _hitBoxDistance = 0.75
 
 [node name="Timer" type="Timer" parent="StateMachine/AttackState"]
+one_shot = true
 
 [node name="DeathState" type="Node" parent="StateMachine"]
 script = ExtResource("84_8v8kw")

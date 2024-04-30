@@ -16,6 +16,7 @@ public abstract partial class Character : CharacterBody3D, IDamager
     [Signal] public delegate void BeenHitEventHandler(Area3D area);
 
     [ExportCategory("WIRING:")] 
+    [Export] protected Sprite3D _spriteNode;
     [Export] private CharacterLifeManager _lifeManager;
     [Export] public Hurtbox HurtBox { get; private set; }
     [Export] public Area3D HitBox { get; private set; }
@@ -39,12 +40,20 @@ public abstract partial class Character : CharacterBody3D, IDamager
         set => GetStatResource(Stat.Health).StatValue = Mathf.Clamp(value, 0, int.MaxValue);
     }
 
+    private ShaderMaterial _shader;
+
     public override void _EnterTree()
     {
         base._EnterTree();
         HurtBox.AreaEntered += OnHurtBoxEntered;
         _lifeManager.WeHaveBeenKilled += OnCharacterKilled;
-        
+        _spriteNode.TextureChanged += OnSpriteTextureChanged;
+    }
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        _shader = (ShaderMaterial) _spriteNode.MaterialOverlay;
     }
 
     public override void _ExitTree()
@@ -52,6 +61,12 @@ public abstract partial class Character : CharacterBody3D, IDamager
         base._ExitTree();
         HurtBox.AreaEntered -= OnHurtBoxEntered;
         _lifeManager.WeHaveBeenKilled -= OnCharacterKilled;
+        _spriteNode.TextureChanged -= OnSpriteTextureChanged;
+    }
+
+    private void OnSpriteTextureChanged()
+    {
+        _shader.SetShaderParameter("tex", _spriteNode.Texture);
     }
 
     protected void OnHurtBoxEntered(Area3D area)

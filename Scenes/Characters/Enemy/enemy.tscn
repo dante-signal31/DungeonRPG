@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=153 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="2_545la"]
 [ext_resource type="Texture2D" uid="uid://dvengx3l0j1f3" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_000.png" id="2_jm0os"]
 [ext_resource type="Texture2D" uid="uid://dp8xvhlv2w7y" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_001.png" id="3_2xwck"]
+[ext_resource type="Shader" path="res://Shaders/character_hurt.gdshader" id="3_g4v7b"]
 [ext_resource type="Texture2D" uid="uid://tkrq24chcba8" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_002.png" id="4_58xpf"]
 [ext_resource type="Texture2D" uid="uid://bntm04admyr7u" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_003.png" id="5_cesks"]
 [ext_resource type="Texture2D" uid="uid://c7bhs3t5m4yop" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_004.png" id="6_sarn2"]
@@ -123,6 +124,14 @@ StatValue = 30.0
 script = ExtResource("2_545la")
 StatType = 1
 StatValue = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w2kuh"]
+resource_local_to_scene = true
+render_priority = 1
+shader = ExtResource("3_g4v7b")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/tex = ExtResource("35_urlnr")
 
 [sub_resource type="Animation" id="Animation_fcrr1"]
 resource_name = "Attack"
@@ -408,11 +417,10 @@ radius = 1.00283
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode", "_agentMover", "_lifeManager", "HurtBox", "HitBox")]
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_agentMover", "_spriteNode", "_lifeManager", "HurtBox", "HitBox")]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_7y2ff")
-_spriteNode = NodePath("Sprite3D")
 _agentMover = NodePath("AI/Movement")
 DefaultState = 1
 MaximumSpeed = 3.0
@@ -420,6 +428,7 @@ StopSpeed = 0.2
 MaximumRotationalSpeed = 1.0
 MaximumAcceleration = 1.0
 MaximumDeceleration = 1.0
+_spriteNode = NodePath("Sprite3D")
 _lifeManager = NodePath("LifeManager")
 HurtBox = NodePath("Hurtbox")
 HitBox = NodePath("Hitbox")
@@ -428,9 +437,10 @@ CooldownTimeAfterAttack = 0.5
 CooldownTimeAfterBeenHit = 1.5
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+material_overlay = SubResource("ShaderMaterial_w2kuh")
 pixel_size = 0.0025
 texture_filter = 0
-texture = ExtResource("46_rhs1c")
+texture = ExtResource("34_utj5k")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -453,10 +463,16 @@ radius = 1.0
 time_horizon_agents = 1.97
 debug_enabled = true
 
-[node name="LifeManager" type="Node" parent="." node_paths=PackedStringArray("_stateMachine", "_characterNode")]
+[node name="LifeManager" type="Node" parent="." node_paths=PackedStringArray("_stateMachine", "_spriteNode", "_hitTimer", "_characterNode")]
 script = ExtResource("102_i4wmb")
 _stateMachine = NodePath("../StateMachine")
+_spriteNode = NodePath("../Sprite3D")
+_hitTimer = NodePath("ShaderTimer")
+_hitTime = 0.25
 _characterNode = NodePath("..")
+
+[node name="ShaderTimer" type="Timer" parent="LifeManager"]
+one_shot = true
 
 [node name="AI" type="Node" parent="." node_paths=PackedStringArray("_characterNode", "_stateMachine", "_navigationAi", "_agentMover", "_combat", "_navigationAgent", "_pursuitSensor", "_attackSensor")]
 script = ExtResource("102_s3qvr")
@@ -516,8 +532,10 @@ _characterNode = NodePath("../../..")
 _attackSensor = NodePath("../../../AttackSensor")
 
 [node name="AttackCooldownTimer" type="Timer" parent="AI/Combat"]
+one_shot = true
 
 [node name="BeenHitCooldownTimer" type="Timer" parent="AI/Combat"]
+one_shot = true
 
 [node name="PursuitSensor" parent="." instance=ExtResource("108_wfnqb")]
 DetectedLayers = 2

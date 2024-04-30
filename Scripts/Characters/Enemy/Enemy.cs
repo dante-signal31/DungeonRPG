@@ -7,7 +7,6 @@ namespace DungeonRPG.Scripts.Characters.Enemy;
 public partial class Enemy : Characters.Character
 {
     [ExportCategory("WIRING:")]
-    [Export] private Sprite3D _spriteNode;
     [Export] private AgentMover _agentMover;
     
     [ExportCategory("CONFIGURATION:")] 
@@ -133,6 +132,7 @@ public partial class Enemy : Characters.Character
 
     public override void _Ready()
     {
+        base._Ready();
         _agentMover.MaximumSpeed = _maximumSpeed;
         _agentMover.StopSpeed = _stopSpeed;
         _agentMover.MaximumRotationalSpeed = _maximumRotationalSpeed;
