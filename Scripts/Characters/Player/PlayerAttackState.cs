@@ -7,6 +7,7 @@ public partial class PlayerAttackState : PlayerState
 {
     [ExportCategory("WIRING:")]
     [Export] private Timer _cooldownTimer;
+    [Export] private PackedScene _lightningScene;
 
     [ExportCategory("CONFIGURATION:")] 
     [Export] private float _cooldownTime = 3.0f;
@@ -19,20 +20,35 @@ public partial class PlayerAttackState : PlayerState
     {
         _cooldownTimer.Timeout += OnCooldownTimerTimeout;
     }
-
-    public override void _ExitTree()
-    {
-        _cooldownTimer.Timeout -= OnCooldownTimerTimeout;
-    }
-
+    
     public override void _Ready()
     {
         base._Ready();
         _cooldownTimer.OneShot = true;
         _cooldownTimer.WaitTime = _cooldownTime;
+        _characterNode.HitBox.BodyEntered += OnBoyEnteredTheHitbox;
+    }
+    
+
+    public override void _ExitTree()
+    {
+        _cooldownTimer.Timeout -= OnCooldownTimerTimeout;
+        _characterNode.HitBox.BodyEntered += OnBoyEnteredTheHitbox;
     }
 
+    private void OnBoyEnteredTheHitbox(Node3D enemyBody)
+    {
+        if (comboCounter != maxComboCount) return;
+        LaunchLightningAttack(enemyBody);
+    }
 
+    private void LaunchLightningAttack(Node3D enemyBody)
+    {
+        Node3D _lightning = _lightningScene.Instantiate<Node3D>();
+        _lightning.Position = enemyBody.Position;
+        GetTree().CurrentScene.AddChild(_lightning);
+    }
+    
     protected override void EnterState()
     {
         _characterNode.AnimationPlayer.Play($"{GameConstants.ANIM_ATTACK}{comboCounter}", 

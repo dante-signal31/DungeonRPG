@@ -213,7 +213,7 @@ Amount = 5.0
 script = ExtResource("1_vnkhn")
 
 [node name="Player" parent="." instance=ExtResource("2_13q2o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2384, 6.25101, -29.8327)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1096, 1.76207, 0.276241)
 floor_max_angle = 1.43641
 
 [node name="Node3D" type="Node3D" parent="Player"]

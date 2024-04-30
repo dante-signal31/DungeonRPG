@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=98 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
@@ -87,6 +87,7 @@
 [ext_resource type="Texture2D" uid="uid://dboj3m7gr1tkw" path="res://Assets/Sprites/Characters/Player/Dying/Dying_013.png" id="77_mmq17"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerDeathState.cs" id="84_8v8kw"]
 [ext_resource type="PackedScene" uid="uid://c6sfu6y54jq45" path="res://Scenes/Abilities/bomb.tscn" id="84_qcyi2"]
+[ext_resource type="PackedScene" uid="uid://bt3k8kmxqqy6m" path="res://Scenes/Abilities/lightning.tscn" id="86_bvqm7"]
 
 [sub_resource type="Animation" id="Animation_ydqwq"]
 resource_name = "Attack1"
@@ -311,6 +312,7 @@ one_shot = true
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("_cooldownTimer")]
 script = ExtResource("66_rvbqp")
 _cooldownTimer = NodePath("Timer")
+_lightningScene = ExtResource("86_bvqm7")
 _hitBoxDistance = 0.75
 
 [node name="Timer" type="Timer" parent="StateMachine/AttackState"]
@@ -323,7 +325,7 @@ shape = SubResource("CapsuleShape3D_lvw7v")
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_pssd2")
