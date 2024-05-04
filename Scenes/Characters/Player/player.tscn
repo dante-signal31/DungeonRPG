@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=101 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" path="res://Shaders/character_hurt.gdshader" id="4_lfuo5"]
 [ext_resource type="Texture2D" uid="uid://dl4nrun6eejd1" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_003.png" id="5_3rodu"]
 [ext_resource type="Texture2D" uid="uid://d38hyh1l02xn6" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_004.png" id="6_hxxbd"]
+[ext_resource type="Texture2D" uid="uid://dub2kdhcevwnv" path="res://Assets/Icon.png" id="7_2m5wh"]
 [ext_resource type="Texture2D" uid="uid://csx7ogcd5m63l" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_005.png" id="7_rfqiv"]
 [ext_resource type="Texture2D" uid="uid://esdn27d4se2s" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_006.png" id="8_bslau"]
 [ext_resource type="Texture2D" uid="uid://cni6hlc0kqrx2" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_007.png" id="9_tm7x7"]
@@ -283,11 +284,17 @@ CooldownTimeAfterAttack = 0.3
 CooldownTimeAfterBeenHit = 1.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+layers = 2
 material_overlay = SubResource("ShaderMaterial_fsu2d")
 pixel_size = 0.0025
 alpha_cut = 2
 texture_filter = 0
 texture = ExtResource("61_4ln20")
+
+[node name="MiniMapMarker" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.50027, 0)
+layers = 8
+texture = ExtResource("7_2m5wh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

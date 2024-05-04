@@ -1,4 +1,4 @@
-[gd_scene load_steps=153 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=154 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scripts/Resources/StatResource.cs" id="2_545la"]
 [ext_resource type="Texture2D" uid="uid://dvengx3l0j1f3" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_000.png" id="2_jm0os"]
 [ext_resource type="Texture2D" uid="uid://dp8xvhlv2w7y" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_001.png" id="3_2xwck"]
+[ext_resource type="Texture2D" uid="uid://bk2uye7l4o2a7" path="res://Assets/Sprites/UI/UI ElementUI 9.png" id="3_foh8n"]
 [ext_resource type="Shader" path="res://Shaders/character_hurt.gdshader" id="3_g4v7b"]
 [ext_resource type="Texture2D" uid="uid://tkrq24chcba8" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_002.png" id="4_58xpf"]
 [ext_resource type="Texture2D" uid="uid://bntm04admyr7u" path="res://Assets/Sprites/Characters/Enemy Knight/Attack/0_Demons_of_Darkness_Slashing_003.png" id="5_cesks"]
@@ -436,12 +437,20 @@ StatResources = Array[Object]([SubResource("Resource_hr7af"), SubResource("Resou
 CooldownTimeAfterAttack = 0.5
 CooldownTimeAfterBeenHit = 1.5
 
+[node name="MiniMapMarker" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.31336, 0)
+layers = 8
+pixel_size = 0.05
+texture_filter = 0
+texture = ExtResource("3_foh8n")
+
 [node name="Sprite3D" type="Sprite3D" parent="."]
+layers = 4
 material_overlay = SubResource("ShaderMaterial_w2kuh")
 pixel_size = 0.0025
 alpha_cut = 2
 texture_filter = 0
-texture = ExtResource("30_8cift")
+texture = ExtResource("34_utj5k")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
