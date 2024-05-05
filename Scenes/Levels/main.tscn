@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://dkikm3mt5cqbo"]
+[gd_scene load_steps=71 format=3 uid="uid://dkikm3mt5cqbo"]
 
 [ext_resource type="Script" path="res://Scripts/Levels/Main.cs" id="1_vnkhn"]
 [ext_resource type="PackedScene" uid="uid://b3kf5tgnvffje" path="res://Scenes/Characters/Player/player.tscn" id="2_13q2o"]
@@ -28,7 +28,9 @@
 [ext_resource type="PackedScene" uid="uid://cgfbj0wiy7uge" path="res://Assets/Models/Dungeon/gltf/banner_thin_green.gltf.glb" id="24_tevfd"]
 [ext_resource type="PackedScene" uid="uid://be2vnf8elw4mg" path="res://Assets/Models/Dungeon/gltf/banner_shield_red.gltf.glb" id="25_5602q"]
 [ext_resource type="PackedScene" uid="uid://bg21a8yodclo5" path="res://Assets/Models/Dungeon/gltf/banner_shield_white.gltf.glb" id="26_37858"]
+[ext_resource type="Texture2D" uid="uid://bfa1vnlc6kwya" path="res://Assets/Sprites/UI/MiniMapFrame.png" id="29_8dtet"]
 [ext_resource type="Script" path="res://Scripts/General/MiniMapCamera.cs" id="29_c5brt"]
+[ext_resource type="Texture2D" uid="uid://c2b24v6e8j8wr" path="res://Assets/Sprites/UI/circle-512.png" id="30_5wemt"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_o12v5"]
 rayleigh_color = Color(0.276306, 0.00704779, 0.409327, 1)
@@ -233,6 +235,8 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0)
 }
 point_count = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xsax0"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_vnkhn")
@@ -576,25 +580,48 @@ script = ExtResource("7_djqga")
 _target = NodePath("../Player")
 positionFromTarget = Vector3(0, 2, 6)
 
-[node name="MiniMapViewportContainer" type="SubViewportContainer" parent="."]
-custom_minimum_size = Vector2(100, 100)
+[node name="MiniMapPanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(250, 250)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -240.0
-offset_right = 10.0
-offset_bottom = 250.0
+offset_left = -1600.0
+offset_bottom = 1600.0
 grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xsax0")
 
-[node name="MiniMapViewport" type="SubViewport" parent="MiniMapViewportContainer"]
+[node name="TextureRect" type="TextureRect" parent="MiniMapPanelContainer"]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 2
+texture = ExtResource("29_8dtet")
+
+[node name="MiniMapMask" type="Sprite2D" parent="MiniMapPanelContainer"]
+clip_children = 1
+position = Vector2(124.25, 124.256)
+scale = Vector2(0.495117, 0.495094)
+texture = ExtResource("30_5wemt")
+
+[node name="MiniMapViewportContainer" type="SubViewportContainer" parent="MiniMapPanelContainer/MiniMapMask"]
+custom_minimum_size = Vector2(250, 250)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -257.0
+offset_top = -249.0
+offset_right = -254.0
+offset_bottom = -246.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MiniMapViewport" type="SubViewport" parent="MiniMapPanelContainer/MiniMapMask/MiniMapViewportContainer"]
 handle_input_locally = false
-size = Vector2i(250, 250)
+size = Vector2i(515, 515)
 render_target_update_mode = 4
 
-[node name="Camera3D" type="Camera3D" parent="MiniMapViewportContainer/MiniMapViewport" node_paths=PackedStringArray("_player")]
+[node name="Camera3D" type="Camera3D" parent="MiniMapPanelContainer/MiniMapMask/MiniMapViewportContainer/MiniMapViewport" node_paths=PackedStringArray("_player")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 20.9404, 13.3275, -13.8256)
 cull_mask = 9
 projection = 1
 size = 14.0
 script = ExtResource("29_c5brt")
-_player = NodePath("../../../Player")
+_player = NodePath("../../../../../Player")

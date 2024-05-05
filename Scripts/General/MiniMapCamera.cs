@@ -10,6 +10,6 @@ public partial class MiniMapCamera : Camera3D
 
     public override void _Process(double delta)
     {
-        Position = _player.Position with {Y = Position.Y};
+        GlobalPosition = _player.GlobalPosition with {Y = GlobalPosition.Y};
     }
 }

@@ -72,6 +72,7 @@ Interact={
 3d_render/layer_2="Player"
 3d_render/layer_3="Enemies"
 3d_render/layer_4="MiniMap Markers"
+2d_render/layer_10="UI"
 3d_physics/layer_1="Environment"
 3d_navigation/layer_1="Enemies"
 3d_physics/layer_2="Player"
