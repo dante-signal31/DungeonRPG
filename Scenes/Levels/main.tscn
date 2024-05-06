@@ -585,19 +585,14 @@ custom_minimum_size = Vector2(250, 250)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -1600.0
-offset_bottom = 1600.0
+offset_left = -250.0
+offset_bottom = 250.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_xsax0")
 
-[node name="TextureRect" type="TextureRect" parent="MiniMapPanelContainer"]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 2
-texture = ExtResource("29_8dtet")
-
 [node name="MiniMapMask" type="Sprite2D" parent="MiniMapPanelContainer"]
 clip_children = 1
-position = Vector2(124.25, 124.256)
+position = Vector2(150, 151)
 scale = Vector2(0.495117, 0.495094)
 texture = ExtResource("30_5wemt")
 
@@ -625,3 +620,9 @@ projection = 1
 size = 14.0
 script = ExtResource("29_c5brt")
 _player = NodePath("../../../../../Player")
+
+[node name="TextureRect" type="TextureRect" parent="MiniMapPanelContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+texture = ExtResource("29_8dtet")
+expand_mode = 1
