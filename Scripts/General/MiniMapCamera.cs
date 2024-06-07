@@ -6,10 +6,10 @@ namespace DungeonRPG.Scripts.General;
 public partial class MiniMapCamera : Camera3D
 {
     [ExportCategory("WIRING:")] 
-    [Export] private Player _player;
+    [Export] public Player Player { get; set; }
 
     public override void _Process(double delta)
     {
-        GlobalPosition = _player.GlobalPosition with {Y = GlobalPosition.Y};
+        GlobalPosition = Player.GlobalPosition with {Y = GlobalPosition.Y};
     }
 }

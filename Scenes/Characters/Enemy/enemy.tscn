@@ -1,4 +1,4 @@
-[gd_scene load_steps=154 format=3 uid="uid://e8ix2a3fj55f"]
+[gd_scene load_steps=156 format=3 uid="uid://e8ix2a3fj55f"]
 
 [ext_resource type="Texture2D" uid="uid://dtmgh3ia0ruav" path="res://Assets/Sprites/Characters/Enemy Knight/Death/smoke-Fx3_17.png" id="1_7m75r"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_7y2ff"]
@@ -115,6 +115,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Hurtbox.cs" id="109_4cve0"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Attack.cs" id="109_5tvnf"]
 [ext_resource type="Script" path="res://Scripts/Characters/Enemy/Combat.cs" id="109_makhg"]
+[ext_resource type="PackedScene" uid="uid://cn7oi5ixx4p20" path="res://Scenes/General/status_bar.tscn" id="116_uj3a8"]
 
 [sub_resource type="Resource" id="Resource_hr7af"]
 script = ExtResource("2_545la")
@@ -418,7 +419,10 @@ radius = 1.00283
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhicj"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_agentMover", "_spriteNode", "_lifeManager", "HurtBox", "HitBox")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_r0ffk"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("_agentMover", "_spriteNode", "_lifeManager", "HurtBox", "HitBox", "StatusBar")]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_7y2ff")
@@ -434,6 +438,7 @@ _lifeManager = NodePath("LifeManager")
 HurtBox = NodePath("Hurtbox")
 HitBox = NodePath("Hitbox")
 StatResources = Array[Object]([SubResource("Resource_hr7af"), SubResource("Resource_adodp")])
+StatusBar = NodePath("HealthBar")
 CooldownTimeAfterAttack = 0.5
 CooldownTimeAfterBeenHit = 1.5
 
@@ -450,7 +455,7 @@ material_overlay = SubResource("ShaderMaterial_w2kuh")
 pixel_size = 0.0025
 alpha_cut = 2
 texture_filter = 0
-texture = ExtResource("34_utj5k")
+texture = ExtResource("32_joi1u")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -471,7 +476,6 @@ target_desired_distance = 0.5
 avoidance_enabled = true
 radius = 1.0
 time_horizon_agents = 1.97
-debug_enabled = true
 
 [node name="LifeManager" type="Node" parent="." node_paths=PackedStringArray("_stateMachine", "_spriteNode", "_hitTimer", "_characterNode")]
 script = ExtResource("102_i4wmb")
@@ -576,3 +580,10 @@ script = ExtResource("109_4cve0")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.107645, -0.0848711, 0)
 shape = SubResource("CapsuleShape3D_kp70k")
+
+[node name="HealthBar" parent="." instance=ExtResource("116_uj3a8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0101236, 0.770356, 0.0219727)
+texture = SubResource("ViewportTexture_r0ffk")
+CurrentValue = 0.0
+
+[connection signal="WeHaveBeenDamaged" from="LifeManager" to="HealthBar" method="OnCurrentValueChanged"]

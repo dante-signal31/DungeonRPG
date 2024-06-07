@@ -7,6 +7,13 @@ namespace DungeonRPG.Scripts.Characters.Player;
 
 public partial class Player : Character
 {
+    /// <summary>
+    /// Signal when player has got a healing reward.
+    ///
+    /// As here health is restore, its value is positive.
+    /// </summary>
+    [Signal] public delegate void HealthRestoredEventHandler(float healthRestored);
+    
     [ExportGroup("WIRING:")]
     [Export] public AnimationPlayer AnimationPlayer { get; private set; }
     [Export] public StateMachine StateMachine { get; private set; }
@@ -40,6 +47,8 @@ public partial class Player : Character
     {
         StatResource statResource = GetStatResource(e.Reward.TargetStat);
         statResource.StatValue += e.Reward.Amount;
+        if (e.Reward.TargetStat == Stat.Health) 
+            EmitSignal(SignalName.HealthRestored, e.Reward.Amount);
     }
 
     public override void _Input(InputEvent @event)

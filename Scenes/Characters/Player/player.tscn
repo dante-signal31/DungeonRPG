@@ -1,4 +1,4 @@
-[gd_scene load_steps=101 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=103 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
@@ -90,6 +90,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerDeathState.cs" id="84_8v8kw"]
 [ext_resource type="PackedScene" uid="uid://c6sfu6y54jq45" path="res://Scenes/Abilities/bomb.tscn" id="84_qcyi2"]
 [ext_resource type="PackedScene" uid="uid://bt3k8kmxqqy6m" path="res://Scenes/Abilities/lightning.tscn" id="86_bvqm7"]
+[ext_resource type="PackedScene" uid="uid://cn7oi5ixx4p20" path="res://Scenes/General/status_bar.tscn" id="91_rdq4s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fsu2d"]
 render_priority = 1
@@ -266,7 +267,10 @@ height = 1.39603
 [sub_resource type="BoxShape3D" id="BoxShape3D_pssd2"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "StateMachine", "_spriteNode", "_lifeManager", "HurtBox", "HitBox")]
+[sub_resource type="ViewportTexture" id="ViewportTexture_paqne"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimationPlayer", "StateMachine", "_spriteNode", "_lifeManager", "HurtBox", "HitBox", "StatusBar")]
 collision_layer = 2
 collision_mask = 5
 floor_block_on_wall = false
@@ -280,6 +284,7 @@ _lifeManager = NodePath("LifeManager")
 HurtBox = NodePath("Hurtbox")
 HitBox = NodePath("Hitbox")
 StatResources = Array[Object]([ExtResource("2_41pki"), ExtResource("3_mvgqt")])
+StatusBar = NodePath("HealthBar")
 CooldownTimeAfterAttack = 0.3
 CooldownTimeAfterBeenHit = 1.0
 
@@ -362,3 +367,12 @@ script = ExtResource("67_xl0sd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
 shape = SubResource("CapsuleShape3D_lvw7v")
+
+[node name="HealthBar" parent="." instance=ExtResource("91_rdq4s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00531912, 0.851027, 0)
+texture = SubResource("ViewportTexture_paqne")
+MaxValue = 100.0
+CurrentValue = 0.0
+
+[connection signal="HealthRestored" from="." to="HealthBar" method="OnCurrentValueChanged"]
+[connection signal="WeHaveBeenDamaged" from="LifeManager" to="HealthBar" method="OnCurrentValueChanged"]

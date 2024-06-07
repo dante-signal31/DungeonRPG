@@ -21,8 +21,9 @@ public abstract partial class Character : CharacterBody3D, IDamager
     [Export] public Hurtbox HurtBox { get; private set; }
     [Export] public Area3D HitBox { get; private set; }
     [Export] public StatResource[] StatResources { get; private set; }
+    [Export] public StatusBar StatusBar { get; private set; }
     
-    [ExportGroup("Combat behavior")]
+    [ExportGroup("CONFIGURATION:")]
     [Export] public float CooldownTimeAfterAttack { get; private set; }
     [Export] public float CooldownTimeAfterBeenHit { get; private set; }
 
@@ -54,6 +55,9 @@ public abstract partial class Character : CharacterBody3D, IDamager
     {
         base._Ready();
         _shader = (ShaderMaterial) _spriteNode.MaterialOverlay;
+        StatusBar.MaxValue = Health;
+        StatusBar.MinValue = 0;
+        StatusBar.CurrentValue = Health;
     }
 
     public override void _ExitTree()

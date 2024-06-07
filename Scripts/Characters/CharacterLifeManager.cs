@@ -10,7 +10,14 @@ public abstract partial class CharacterLifeManager : Node
     /// <summary>
     /// Signal that we have just jumped into Death state.
     /// </summary>
-    [Signal]public delegate void WeHaveBeenKilledEventHandler();
+    [Signal] public delegate void WeHaveBeenKilledEventHandler();
+
+    /// <summary>
+    /// Signal that we have received some damage.
+    ///
+    /// Damage is a negative value.
+    /// </summary>
+    [Signal] public delegate void WeHaveBeenDamagedEventHandler(float damage);
     
     [ExportCategory("WIRING:")]
     [Export] private Character _characterNode;
@@ -36,6 +43,7 @@ public abstract partial class CharacterLifeManager : Node
     protected virtual void ApplyDamage(float damage)
     {
         _characterNode.Health -= damage;
+        EmitSignal(SignalName.WeHaveBeenDamaged, -damage);
         GD.Print($"[{_characterNode.Name}] Health = {_characterNode.Health}");
         if (_characterNode.Health == 0)
         {
