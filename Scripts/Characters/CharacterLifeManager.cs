@@ -44,7 +44,8 @@ public abstract partial class CharacterLifeManager : Node
     {
         _characterNode.Health -= damage;
         EmitSignal(SignalName.WeHaveBeenDamaged, -damage);
-        GD.Print($"[{_characterNode.Name}] Health = {_characterNode.Health}");
+        GD.Print($"[{_characterNode.Name}] Health = " +
+                 $"{_characterNode.Health}");
         if (_characterNode.Health == 0)
         {
             CharacterKilled();
