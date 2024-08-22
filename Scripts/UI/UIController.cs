@@ -69,4 +69,14 @@ public partial class UIController : Control
     {
         _containers[ContainerType.Pause].Visible = true;
     }
+
+    private void OnMapShown()
+    {
+        _containers[ContainerType.Stats].Visible = false;
+    }
+
+    private void OnMapHidden()
+    {
+        _containers[ContainerType.Stats].Visible = true;
+    }
 }

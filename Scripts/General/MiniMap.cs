@@ -14,4 +14,14 @@ public partial class MiniMap : PanelContainer
         GetNode<MiniMapCamera>(
             "MiniMapMask/MiniMapViewportContainer/MiniMapViewport/Camera3D").Player = _player;
     }
+
+    private void OnMapShown()
+    {
+        Visible = false;
+    }
+    
+    private void OnMapHidden()
+    {
+        Visible = true;
+    }
 }

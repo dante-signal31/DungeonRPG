@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=3 uid="uid://b3kf5tgnvffje"]
+[gd_scene load_steps=104 format=3 uid="uid://b3kf5tgnvffje"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_6euok"]
 [ext_resource type="Texture2D" uid="uid://qquqe2nsc4mf" path="res://Assets/Sprites/Characters/Player/Running/Running_002.png" id="1_gx2vu"]
@@ -91,6 +91,7 @@
 [ext_resource type="PackedScene" uid="uid://c6sfu6y54jq45" path="res://Scenes/Abilities/bomb.tscn" id="84_qcyi2"]
 [ext_resource type="PackedScene" uid="uid://bt3k8kmxqqy6m" path="res://Scenes/Abilities/lightning.tscn" id="86_bvqm7"]
 [ext_resource type="PackedScene" uid="uid://cn7oi5ixx4p20" path="res://Scenes/General/status_bar.tscn" id="91_rdq4s"]
+[ext_resource type="Texture2D" uid="uid://clhrrke6jelmu" path="res://Assets/Sprites/General/FogGradientInverted.png" id="92_8jlyl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fsu2d"]
 render_priority = 1
@@ -294,7 +295,7 @@ material_overlay = SubResource("ShaderMaterial_fsu2d")
 pixel_size = 0.0025
 alpha_cut = 2
 texture_filter = 0
-texture = ExtResource("61_4ln20")
+texture = ExtResource("2_lhik7")
 
 [node name="MiniMapMarker" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.50027, 0)
@@ -373,6 +374,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00531912, 0.851027, 0)
 texture = SubResource("ViewportTexture_paqne")
 MaxValue = 100.0
 CurrentValue = 0.0
+
+[node name="FogOfWarShape" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.53326, 0)
+layers = 16
+pixel_size = 0.1
+texture = ExtResource("92_8jlyl")
 
 [connection signal="HealthRestored" from="." to="HealthBar" method="OnCurrentValueChanged"]
 [connection signal="WeHaveBeenDamaged" from="LifeManager" to="HealthBar" method="OnCurrentValueChanged"]
