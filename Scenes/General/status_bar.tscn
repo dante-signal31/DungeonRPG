@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://cn7oi5ixx4p20"]
+
+[ext_resource type="Script" path="res://Scripts/General/StatusBar.cs" id="1_81l87"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ix03s"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gbyyd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inosr"]
+bg_color = Color(0, 0, 1, 1)
+anti_aliasing = false
+
+[node name="Sprite3D" type="Sprite3D" node_paths=PackedStringArray("_progressBar")]
+cast_shadow = 0
+billboard = 1
+double_sided = false
+texture = SubResource("ViewportTexture_ix03s")
+script = ExtResource("1_81l87")
+CurrentValue = 0.47
+_progressBar = NodePath("SubViewport/ProgressBar")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(57, 10)
+
+[node name="ProgressBar" type="ProgressBar" parent="SubViewport"]
+offset_right = 57.0
+offset_bottom = 12.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_gbyyd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_inosr")
+step = 1.0
+value = 28.0
+show_percentage = false

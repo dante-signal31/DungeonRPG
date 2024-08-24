@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://bldbjsp8kkkc7"]
+
+[ext_resource type="Script" path="res://Scripts/Reward/TreasureChest.cs" id="1_c2etg"]
+[ext_resource type="Texture2D" uid="uid://by1k8lmdu84nl" path="res://Assets/Sprites/General/16x16.png" id="1_ujfxy"]
+[ext_resource type="Texture2D" uid="uid://d0r281fnx2grc" path="res://Assets/Sprites/UI/Keyboard Letters and Symbols.png" id="2_bvmyt"]
+[ext_resource type="PackedScene" uid="uid://dkajksv32hcun" path="res://Scenes/Sensors/VolumetricSensor.tscn" id="4_mcgri"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3aetj"]
+size = Vector3(1, 0.907959, 0.290894)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bbu0g"]
+radius = 2.0
+
+[node name="TreasureChest" type="StaticBody3D" node_paths=PackedStringArray("_playerSensor", "_openChestSprite", "_closedChestSprite", "_hintSprite")]
+collision_mask = 0
+script = ExtResource("1_c2etg")
+_playerSensor = NodePath("VolumetricSensor")
+_openChestSprite = NodePath("OpenChestSprite")
+_closedChestSprite = NodePath("ClosedChestSprite")
+_hintSprite = NodePath("InteractiveIcon")
+
+[node name="ClosedChestSprite" type="Sprite3D" parent="."]
+pixel_size = 0.05
+texture_filter = 0
+texture = ExtResource("1_ujfxy")
+region_enabled = true
+region_rect = Rect2(16, 7, 16, 23)
+
+[node name="OpenChestSprite" type="Sprite3D" parent="."]
+visible = false
+pixel_size = 0.05
+texture_filter = 0
+texture = ExtResource("1_ujfxy")
+region_enabled = true
+region_rect = Rect2(32.0598, 7.72941, 16.0723, 21.3497)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0784912, 0.022522)
+shape = SubResource("BoxShape3D_3aetj")
+
+[node name="InteractiveIcon" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.683056, 0)
+visible = false
+pixel_size = 0.02
+texture_filter = 0
+texture = ExtResource("2_bvmyt")
+region_enabled = true
+region_rect = Rect2(64.6186, 34.135, 13.5131, 11.8818)
+
+[node name="VolumetricSensor" parent="." instance=ExtResource("4_mcgri")]
+SensorLayers = 8
+DetectedLayers = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VolumetricSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.463343, 0)
+shape = SubResource("CylinderShape3D_bbu0g")

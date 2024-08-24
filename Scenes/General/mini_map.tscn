@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://c52w7der4vrr8"]
+
+[ext_resource type="Script" path="res://Scripts/General/MiniMap.cs" id="1_ixoeh"]
+[ext_resource type="Texture2D" uid="uid://c2b24v6e8j8wr" path="res://Assets/Sprites/UI/circle-512.png" id="1_ol7sh"]
+[ext_resource type="Script" path="res://Scripts/General/MiniMapCamera.cs" id="2_ebibg"]
+[ext_resource type="Texture2D" uid="uid://bfa1vnlc6kwya" path="res://Assets/Sprites/UI/MiniMapFrame.png" id="3_cmxec"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xsax0"]
+
+[node name="MiniMapPanelContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(250, 250)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_bottom = 250.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xsax0")
+script = ExtResource("1_ixoeh")
+
+[node name="MiniMapMask" type="Sprite2D" parent="."]
+clip_children = 1
+position = Vector2(150, 151)
+scale = Vector2(0.495117, 0.495094)
+texture = ExtResource("1_ol7sh")
+
+[node name="MiniMapViewportContainer" type="SubViewportContainer" parent="MiniMapMask"]
+custom_minimum_size = Vector2(250, 250)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -257.0
+offset_top = -249.0
+offset_right = -254.0
+offset_bottom = -246.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MiniMapViewport" type="SubViewport" parent="MiniMapMask/MiniMapViewportContainer"]
+handle_input_locally = false
+size = Vector2i(515, 515)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="MiniMapMask/MiniMapViewportContainer/MiniMapViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 20.9404, 13.3275, -13.8256)
+cull_mask = 9
+projection = 1
+size = 14.0
+script = ExtResource("2_ebibg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+texture = ExtResource("3_cmxec")
+expand_mode = 1

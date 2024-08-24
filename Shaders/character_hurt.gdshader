@@ -9,11 +9,11 @@ uniform sampler2D tex: source_color;
 void fragment() {
 	vec4 color = texture(tex, UV);
 	ALPHA = color.a;
-		
+
 	if (active){
 		color = flash_color;
 	}
-	
+
 	ALBEDO = vec3(color.r, color.g, color.b);
 
 }

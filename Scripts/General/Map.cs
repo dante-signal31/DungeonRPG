@@ -5,7 +5,7 @@ namespace DungeonRPG.Scripts.General;
 
 
 [Tool]
-public partial class Map : SubViewportContainer
+public partial class Map : Control
 {
     [Signal] public delegate void MapShownEventHandler();
     [Signal] public delegate void MapHiddenEventHandler();
@@ -14,28 +14,60 @@ public partial class Map : SubViewportContainer
     [Export(PropertyHint.Range, "0, 100, 1")] private float _cameraHeight = 10f;
     [Export] private Camera3D.KeepAspectEnum _keepAspect = Camera3D.KeepAspectEnum.Height;
     [Export(PropertyHint.Range, "0, 100, 1")] private float _size;
+    [Export] private Color _fogColor = new Color(0, 0, 0);
     
     [ExportGroup("WIRING:")] 
-    [Export] private Camera3D _camera;
+    [Export] private Camera3D _mapCamera;
+    [Export] private Camera3D _shapeCamera;
+    // [Export] private TextureRect _currentShapesTexture;
+    [Export] private TextureRect _maskTexture;
+    [Export] private ColorRect _maskShaderTexture;
 
     private Marker3D _cameraPosition;
+    private ShaderMaterial _maskMaterial;
     
     public override void _Ready()
     {
         base._Ready();
+        ConfigureMask();
         GetCameraPositionMarker();
-        if (_cameraPosition == null) return;
-        UpdateCameraConfiguration();
+        UpdateCamerasConfiguration();
+    }
+
+    private void UpdateCamerasConfiguration()
+    {
+        UpdateCameraConfiguration(_mapCamera);
+        UpdateCameraConfiguration(_shapeCamera);
+    }
+
+    private void ConfigureMask()
+    {
+        if (_maskMaterial == null) 
+            _maskMaterial = (ShaderMaterial) _maskShaderTexture.Material;
+        UpdateMaskShader();
+    }
+
+    private void UpdateMaskShader()
+    {
+        if (_maskMaterial == null) return;
+        _maskMaterial.SetShaderParameter("fogColor", _fogColor);
+        // _maskMaterial.SetShaderParameter(
+        //     "shapesTexture", 
+        //     _currentShapesTexture.Texture);
+        // _maskMaterial.SetShaderParameter(
+        //     "prev_frame_tex", 
+        //     _backBuffer);
     }
 
     private void GetCameraPositionMarker()
     {
-        _cameraPosition = GetNode<Marker3D>("Marker3D");
+        _cameraPosition = GetNodeOrNull<Marker3D>("Marker3D");
         UpdateConfigurationWarnings();
     }
 
-    private void UpdateCameraConfiguration()
+    private void UpdateCameraConfiguration(Camera3D _camera)
     {
+        if (_cameraPosition == null) return;
         _camera.GlobalPosition = _cameraPosition.GlobalPosition with {Y = _cameraHeight};
         _camera.KeepAspect = _keepAspect;
         _camera.Size = _size;
@@ -51,8 +83,9 @@ public partial class Map : SubViewportContainer
                 GetCameraPositionMarker();
                 if (_cameraPosition == null) return;
             };
-            UpdateCameraConfiguration();
+            UpdateCamerasConfiguration();
         }
+        UpdateMaskShader();
     }
     
     public override string[] _GetConfigurationWarnings()
