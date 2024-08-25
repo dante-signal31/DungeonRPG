@@ -27,7 +27,7 @@ shader_parameter/maskTexture = SubResource("ViewportTexture_flf8q")
 [sub_resource type="ViewportTexture" id="ViewportTexture_fw710"]
 viewport_path = NodePath("SubViewportMap")
 
-[node name="MapContainer" type="Control" node_paths=PackedStringArray("_mapCamera", "_shapeCamera", "_maskTexture", "_maskShaderTexture")]
+[node name="MapContainer" type="Control" node_paths=PackedStringArray("_mapCamera", "_shapeCamera", "_maskShaderTexture", "_mapShaderTexture")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,8 +37,8 @@ grow_vertical = 2
 script = ExtResource("1_wclij")
 _mapCamera = NodePath("SubViewportMap/Camera3D")
 _shapeCamera = NodePath("SubViewportShapes/Camera3D")
-_maskTexture = NodePath("")
 _maskShaderTexture = NodePath("SubViewportMask/MaskShader")
+_mapShaderTexture = NodePath("Map")
 
 [node name="SubViewportShapes" type="SubViewport" parent="."]
 handle_input_locally = false

@@ -19,44 +19,38 @@ public partial class Map : Control
     [ExportGroup("WIRING:")] 
     [Export] private Camera3D _mapCamera;
     [Export] private Camera3D _shapeCamera;
-    // [Export] private TextureRect _currentShapesTexture;
-    [Export] private TextureRect _maskTexture;
     [Export] private ColorRect _maskShaderTexture;
+    [Export] private TextureRect _mapShaderTexture;
 
     private Marker3D _cameraPosition;
     private ShaderMaterial _maskMaterial;
+    private ShaderMaterial _mapMaterial;
     
     public override void _Ready()
     {
         base._Ready();
-        ConfigureMask();
+        ConfigureMap();
         GetCameraPositionMarker();
         UpdateCamerasConfiguration();
+    }
+
+    private void ConfigureMap()
+    {
+        if (_mapMaterial == null) 
+            _mapMaterial = (ShaderMaterial) _mapShaderTexture.Material;
+        UpdateMapShader();
+    }
+
+    private void UpdateMapShader()
+    {
+        if (_mapMaterial == null) return;
+            _mapMaterial.SetShaderParameter("fogColor", _fogColor);
     }
 
     private void UpdateCamerasConfiguration()
     {
         UpdateCameraConfiguration(_mapCamera);
         UpdateCameraConfiguration(_shapeCamera);
-    }
-
-    private void ConfigureMask()
-    {
-        if (_maskMaterial == null) 
-            _maskMaterial = (ShaderMaterial) _maskShaderTexture.Material;
-        UpdateMaskShader();
-    }
-
-    private void UpdateMaskShader()
-    {
-        if (_maskMaterial == null) return;
-        _maskMaterial.SetShaderParameter("fogColor", _fogColor);
-        // _maskMaterial.SetShaderParameter(
-        //     "shapesTexture", 
-        //     _currentShapesTexture.Texture);
-        // _maskMaterial.SetShaderParameter(
-        //     "prev_frame_tex", 
-        //     _backBuffer);
     }
 
     private void GetCameraPositionMarker()
@@ -85,7 +79,6 @@ public partial class Map : Control
             };
             UpdateCamerasConfiguration();
         }
-        UpdateMaskShader();
     }
     
     public override string[] _GetConfigurationWarnings()
