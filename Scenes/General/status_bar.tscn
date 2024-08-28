@@ -14,6 +14,7 @@ bg_color = Color(0, 0, 1, 1)
 anti_aliasing = false
 
 [node name="Sprite3D" type="Sprite3D" node_paths=PackedStringArray("_progressBar")]
+layers = 6
 cast_shadow = 0
 billboard = 1
 double_sided = false

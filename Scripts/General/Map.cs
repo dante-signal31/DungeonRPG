@@ -19,6 +19,7 @@ public partial class Map : Control
     [ExportGroup("WIRING:")] 
     [Export] private Camera3D _mapCamera;
     [Export] private Camera3D _shapeCamera;
+    [Export] private Camera3D _staticMapCamera;
     [Export] private ColorRect _maskShaderTexture;
     [Export] private TextureRect _mapShaderTexture;
 
@@ -51,6 +52,7 @@ public partial class Map : Control
     {
         UpdateCameraConfiguration(_mapCamera);
         UpdateCameraConfiguration(_shapeCamera);
+        UpdateCameraConfiguration(_staticMapCamera);
     }
 
     private void GetCameraPositionMarker()

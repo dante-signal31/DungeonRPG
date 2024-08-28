@@ -1,8 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://b674cdggnri11"]
+[gd_scene load_steps=13 format=3 uid="uid://b674cdggnri11"]
 
 [ext_resource type="Script" path="res://Scripts/General/Map.cs" id="1_wclij"]
 [ext_resource type="Shader" path="res://Shaders/MapMask.gdshader" id="2_qa1aq"]
 [ext_resource type="Shader" path="res://Shaders/Map.gdshader" id="3_ywugf"]
+
+[sub_resource type="Environment" id="Environment_vulpk"]
+adjustment_enabled = true
+adjustment_brightness = 0.31
 
 [sub_resource type="Environment" id="Environment_5lw5h"]
 background_mode = 1
@@ -18,16 +22,24 @@ shader_parameter/shapesTexture = SubResource("ViewportTexture_g75sy")
 [sub_resource type="ViewportTexture" id="ViewportTexture_flf8q"]
 viewport_path = NodePath("SubViewportMask")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_d5hle"]
+viewport_path = NodePath("SubViewportShapes")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_wyfgi"]
+viewport_path = NodePath("SubViewportStatic")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qpqbx"]
 resource_local_to_scene = true
 shader = ExtResource("3_ywugf")
 shader_parameter/fogColor = Color(0, 0, 0, 1)
 shader_parameter/maskTexture = SubResource("ViewportTexture_flf8q")
+shader_parameter/shapesTexture = SubResource("ViewportTexture_d5hle")
+shader_parameter/staticMapTexture = SubResource("ViewportTexture_wyfgi")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_fw710"]
 viewport_path = NodePath("SubViewportMap")
 
-[node name="MapContainer" type="Control" node_paths=PackedStringArray("_mapCamera", "_shapeCamera", "_maskShaderTexture", "_mapShaderTexture")]
+[node name="MapContainer" type="Control" node_paths=PackedStringArray("_mapCamera", "_shapeCamera", "_staticMapCamera", "_maskShaderTexture", "_mapShaderTexture")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,18 +49,19 @@ grow_vertical = 2
 script = ExtResource("1_wclij")
 _mapCamera = NodePath("SubViewportMap/Camera3D")
 _shapeCamera = NodePath("SubViewportShapes/Camera3D")
+_staticMapCamera = NodePath("SubViewportStatic/Camera3D")
 _maskShaderTexture = NodePath("SubViewportMask/MaskShader")
 _mapShaderTexture = NodePath("Map")
 
-[node name="SubViewportShapes" type="SubViewport" parent="."]
+[node name="SubViewportStatic" type="SubViewport" parent="."]
 handle_input_locally = false
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
-[node name="Camera3D" type="Camera3D" parent="SubViewportShapes"]
+[node name="Camera3D" type="Camera3D" parent="SubViewportStatic"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)
-cull_mask = 16
-environment = SubResource("Environment_5lw5h")
+cull_mask = 1
+environment = SubResource("Environment_vulpk")
 projection = 1
 current = true
 size = 80.0
@@ -61,6 +74,19 @@ render_target_update_mode = 4
 [node name="Camera3D" type="Camera3D" parent="SubViewportMap"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)
 cull_mask = 9
+projection = 1
+current = true
+size = 80.0
+
+[node name="SubViewportShapes" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportShapes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)
+cull_mask = 16
+environment = SubResource("Environment_5lw5h")
 projection = 1
 current = true
 size = 80.0
