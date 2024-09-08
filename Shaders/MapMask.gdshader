@@ -12,7 +12,3 @@ void fragment() {
 		COLOR = previousColor;
 	}
 }
-
-
-
-

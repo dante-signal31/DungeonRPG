@@ -10,7 +10,7 @@ void fragment() {
 	vec4 maskSample = texture(maskTexture, UV);
 	vec4 shapesSample = texture(shapesTexture, UV);
 	vec4 staticMapSample = texture(staticMapTexture, UV);
-	
+
 	if (maskSample.r == 0.0){
 		COLOR = fogColor;
 	} else if (shapesSample.r == 0.0){

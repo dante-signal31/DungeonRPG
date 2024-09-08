@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://dkikm3mt5cqbo"]
+[gd_scene load_steps=70 format=3 uid="uid://dkikm3mt5cqbo"]
 
 [ext_resource type="Script" path="res://Scripts/Levels/Main.cs" id="1_vnkhn"]
 [ext_resource type="PackedScene" uid="uid://b3kf5tgnvffje" path="res://Scenes/Characters/Player/player.tscn" id="2_13q2o"]
@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://be2vnf8elw4mg" path="res://Assets/Models/Dungeon/gltf/banner_shield_red.gltf.glb" id="25_5602q"]
 [ext_resource type="PackedScene" uid="uid://bg21a8yodclo5" path="res://Assets/Models/Dungeon/gltf/banner_shield_white.gltf.glb" id="26_37858"]
 [ext_resource type="PackedScene" uid="uid://b674cdggnri11" path="res://Scenes/General/Map.tscn" id="30_a4tx3"]
+[ext_resource type="Script" path="res://addons/area_rect/AreaRect.cs" id="31_qpsyi"]
 [ext_resource type="PackedScene" uid="uid://c52w7der4vrr8" path="res://Scenes/General/mini_map.tscn" id="32_oiijg"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_o12v5"]
@@ -246,7 +247,6 @@ _target = NodePath("../Player")
 positionFromTarget = Vector3(0, 2, 6)
 
 [node name="MapContainer" parent="." instance=ExtResource("30_a4tx3")]
-visible = false
 _cameraHeight = 21.579
 _size = 52.671
 
@@ -590,6 +590,15 @@ process_mode = 3
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.04238, 0, 11.2323)
+
+[node name="AreaRect" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+script = ExtResource("31_qpsyi")
+AspectRatio = 2.0
+Width = 22.7566
+Height = 11.3783
+Up = Vector3(0, 0, 1)
+GizmoColor = Color(0.374637, 0.910235, 0, 1)
 
 [connection signal="MapHidden" from="MapContainer" to="Minimap" method="OnMapHidden"]
 [connection signal="MapHidden" from="MapContainer" to="UI" method="OnMapHidden"]

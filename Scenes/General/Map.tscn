@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://b674cdggnri11"]
+[gd_scene load_steps=14 format=3 uid="uid://b674cdggnri11"]
 
 [ext_resource type="Script" path="res://Scripts/General/Map.cs" id="1_wclij"]
-[ext_resource type="Shader" path="res://Shaders/MapMask.gdshader" id="2_qa1aq"]
+[ext_resource type="Shader" path="res://Shaders/MapAlphaMask.gdshader" id="2_37km6"]
 [ext_resource type="Shader" path="res://Shaders/Map.gdshader" id="3_ywugf"]
 
 [sub_resource type="Environment" id="Environment_vulpk"]
@@ -16,8 +16,12 @@ viewport_path = NodePath("SubViewportShapes")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_86g3y"]
 resource_local_to_scene = true
-shader = ExtResource("2_qa1aq")
+shader = ExtResource("2_37km6")
+shader_parameter/fogColor = null
 shader_parameter/shapesTexture = SubResource("ViewportTexture_g75sy")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6suxc"]
+viewport_path = NodePath("SubViewportAlphaMask")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_flf8q"]
 viewport_path = NodePath("SubViewportMask")
@@ -39,7 +43,7 @@ shader_parameter/staticMapTexture = SubResource("ViewportTexture_wyfgi")
 [sub_resource type="ViewportTexture" id="ViewportTexture_fw710"]
 viewport_path = NodePath("SubViewportMap")
 
-[node name="MapContainer" type="Control" node_paths=PackedStringArray("_mapCamera", "_shapeCamera", "_staticMapCamera", "_maskShaderTexture", "_mapShaderTexture")]
+[node name="MapContainer" type="Control" node_paths=PackedStringArray("_mapCamera", "_shapeCamera", "_staticMapCamera", "_maskShaderTexture", "_mapShaderTexture", "_fogOfWarDecal")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,6 +56,7 @@ _shapeCamera = NodePath("SubViewportShapes/Camera3D")
 _staticMapCamera = NodePath("SubViewportStatic/Camera3D")
 _maskShaderTexture = NodePath("SubViewportMask/MaskShader")
 _mapShaderTexture = NodePath("Map")
+_fogOfWarDecal = NodePath("Decal")
 
 [node name="SubViewportStatic" type="SubViewport" parent="."]
 handle_input_locally = false
@@ -103,6 +108,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="SubViewportAlphaMask" type="SubViewport" parent="."]
+render_target_clear_mode = 1
+render_target_update_mode = 4
+
+[node name="AlphaMaskShader" type="ColorRect" parent="SubViewportAlphaMask"]
+material = SubResource("ShaderMaterial_86g3y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Decal" type="Decal" parent="."]
+layers = 0
+texture_albedo = SubResource("ViewportTexture_6suxc")
+cull_mask = 5
 
 [node name="Map" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_qpqbx")

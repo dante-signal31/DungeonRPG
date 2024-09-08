@@ -22,10 +22,12 @@ public partial class Map : Control
     [Export] private Camera3D _staticMapCamera;
     [Export] private ColorRect _maskShaderTexture;
     [Export] private TextureRect _mapShaderTexture;
+    [Export] private TextureRect _alphaMaskShaderTexture;
+    [Export] private Decal _fogOfWarDecal;
 
     private Marker3D _cameraPosition;
-    private ShaderMaterial _maskMaterial;
     private ShaderMaterial _mapMaterial;
+    private ShaderMaterial _alphaMaskMaterial;
     
     public override void _Ready()
     {
@@ -33,7 +35,19 @@ public partial class Map : Control
         ConfigureMap();
         GetCameraPositionMarker();
         UpdateCamerasConfiguration();
+        // ConfigureDecal();
     }
+
+    // private void ConfigureDecal()
+    // {
+    //     if (_alphaMaskMaterial == null) 
+    //         _alphaMaskMaterial = (ShaderMaterial) _alphaMaskShaderTexture.Material;
+    //     _alphaMaskMaterial?.SetShaderParameter("fogColor", _fogColor);
+    //     
+    //     if (_cameraPosition == null) return;
+    //     _fogOfWarDecal.GlobalPosition = _cameraPosition.GlobalPosition;
+    //     _fogOfWarDecal.Size = _mapCamera.Size with {Y = _cameraHeight};
+    // }
 
     private void ConfigureMap()
     {
@@ -88,7 +102,8 @@ public partial class Map : Control
         List<string> warnings = new();
         if (_cameraPosition == null)
         {
-            warnings.Add("[Map] Marker3D for map camera position not found.");
+            warnings.Add("[Map] Marker3D for map camera position not found. " +
+                         "Add a Marker3D to position map camera.");
         }
         return warnings.ToArray();
     }
