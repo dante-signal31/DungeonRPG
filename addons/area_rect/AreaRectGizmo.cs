@@ -106,8 +106,8 @@ public partial class AreaRectGizmo : EditorNode3DGizmoPlugin
                         areaRect.GlobalPosition + areaRect.Right * areaRect.Width/2 + areaRect.Up * -areaRect.Height/2
                         )
                 );
-                areaRect.Width = Mathf.Abs(handlePosition.X - areaRect.GlobalPosition.X) * 2;
-                areaRect.Height = Mathf.Abs(handlePosition.Y - areaRect.GlobalPosition.Y) * 2;
+                areaRect.Width = ((handlePosition - areaRect.GlobalPosition) * areaRect.Right).Length() * 2;
+                areaRect.Height = ((handlePosition - areaRect.GlobalPosition) * areaRect.Up).Length() * 2;;
                 break;
             default:
                 base._SetHandle(gizmo, handleId, secondary, camera, screenPos);
