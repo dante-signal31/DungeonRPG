@@ -31,11 +31,9 @@ public partial class AreaRect : Node3D
             if (!Mathf.IsEqualApprox(_width,value))
             {
                 _width = value;
-                GD.Print($"[AreaRect] Width set to {_width}");
                 if (AspectRatioEnabled)
                 {
                     _height = Width / AspectRatio;
-                    GD.Print($"[AreaRect] Height set to {_height} because of aspect ratio relation.");
                 }
                 UpdateGizmos();
             }
