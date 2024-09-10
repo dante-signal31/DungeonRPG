@@ -12,13 +12,17 @@ public partial class AreaRectGizmo : EditorNode3DGizmoPlugin
     private StandardMaterial3D _rectMaterial;
     private StandardMaterial3D _handleMaterial;
     private EditorUndoRedoManager _undoRedo;
-    
-    public AreaRectGizmo(EditorUndoRedoManager undoRedo)
+
+    public AreaRectGizmo()
     {
         CreateMaterial(AREA_RECT_MATERIAL_NAME, new Color(1,0,0));
         CreateHandleMaterial(AREA_RECT_HANDLE_MATERIAL_NAME);
         _rectMaterial = GetMaterial(AREA_RECT_MATERIAL_NAME);
         _handleMaterial = GetMaterial(AREA_RECT_HANDLE_MATERIAL_NAME);
+    }
+
+    public AreaRectGizmo(EditorUndoRedoManager undoRedo): this()
+    {
         _undoRedo = undoRedo;
     }
 

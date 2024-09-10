@@ -25,6 +25,7 @@ public partial class Map : Control
     [Export] private Camera3D _staticMapCamera;
     [Export] private ColorRect _maskShaderTexture;
     [Export] private TextureRect _mapShaderTexture;
+    
     [Export] private ColorRect _alphaMaskShaderTexture;
     [Export] private Decal _fogOfWarDecal;
     [Export] private AreaRect _mapCameraAreaRect;
@@ -43,16 +44,19 @@ public partial class Map : Control
         // ConfigureDecal();
     }
 
-    // private void ConfigureDecal()
-    // {
-    //     if (_alphaMaskMaterial == null) 
-    //         _alphaMaskMaterial = (ShaderMaterial) _alphaMaskShaderTexture.Material;
-    //     _alphaMaskMaterial?.SetShaderParameter("fogColor", _fogColor);
-    //     
-    //     if (_cameraPosition == null) return;
-    //     _fogOfWarDecal.GlobalPosition = _cameraPosition.GlobalPosition;
-    //     _fogOfWarDecal.Size = _mapCamera.Size with {Y = _cameraHeight};
-    // }
+    private void ConfigureDecal()
+    {
+        if (_alphaMaskMaterial == null) 
+            _alphaMaskMaterial = (ShaderMaterial) _alphaMaskShaderTexture.Material;
+        _alphaMaskMaterial?.SetShaderParameter("fogColor", _fogColor);
+        
+        if (_cameraPosition == null) return;
+        _fogOfWarDecal.GlobalPosition = _cameraPosition.GlobalPosition;
+        _fogOfWarDecal.Size = new Vector3(
+            _mapCameraAreaRect.Width, 
+            _mapCameraAreaRect.Height, 
+            _cameraHeight);
+    }
 
     private void ConfigureMap()
     {

@@ -246,6 +246,7 @@ _target = NodePath("../Player")
 positionFromTarget = Vector3(0, 2, 6)
 
 [node name="MapContainer" parent="." instance=ExtResource("30_a4tx3")]
+visible = false
 _cameraHeight = 21.579
 _size = 52.671
 _mapCameraGizmoColor = Color(0, 0.988235, 0, 1)
