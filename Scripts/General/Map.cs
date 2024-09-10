@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using DungeonRPG.addons.area_rect;
 using Godot;
 
 namespace DungeonRPG.Scripts.General;
@@ -15,6 +17,7 @@ public partial class Map : Control
     [Export] private Camera3D.KeepAspectEnum _keepAspect = Camera3D.KeepAspectEnum.Height;
     [Export(PropertyHint.Range, "0, 100, 1")] private float _size;
     [Export] private Color _fogColor = new Color(0, 0, 0);
+    [Export] private Color _mapCameraGizmoColor = new Color(0, 0, 0);
     
     [ExportGroup("WIRING:")] 
     [Export] private Camera3D _mapCamera;
@@ -22,8 +25,10 @@ public partial class Map : Control
     [Export] private Camera3D _staticMapCamera;
     [Export] private ColorRect _maskShaderTexture;
     [Export] private TextureRect _mapShaderTexture;
-    [Export] private TextureRect _alphaMaskShaderTexture;
+    [Export] private ColorRect _alphaMaskShaderTexture;
     [Export] private Decal _fogOfWarDecal;
+    [Export] private AreaRect _mapCameraAreaRect;
+    [Export] private SubViewport _mapSubviewPort;
 
     private Marker3D _cameraPosition;
     private ShaderMaterial _mapMaterial;
@@ -94,9 +99,30 @@ public partial class Map : Control
                 if (_cameraPosition == null) return;
             };
             UpdateCamerasConfiguration();
+            UpdateCameraAreaRect();
         }
     }
-    
+
+    private void UpdateCameraAreaRect()
+    {
+        _mapCameraAreaRect.GlobalPosition = _mapCamera.GlobalPosition;
+        _mapCameraAreaRect.AspectRatioEnabled = true;
+        _mapCameraAreaRect.AspectType = _mapCamera.KeepAspect;
+        _mapCameraAreaRect.AspectRatio = (float) _mapSubviewPort.Size.X / _mapSubviewPort.Size.Y;
+        switch (_mapCameraAreaRect.AspectType)
+        {
+            case Camera3D.KeepAspectEnum.Height:
+                _mapCameraAreaRect.Width = _mapCamera.Size;
+                break;
+            case Camera3D.KeepAspectEnum.Width:
+                _mapCameraAreaRect.Height = _mapCamera.Size;
+                break;
+        }
+        _mapCameraAreaRect.Right = _mapCamera.Basis.X;
+        _mapCameraAreaRect.Up = _mapCamera.Basis.Y;
+        _mapCameraAreaRect.GizmoColor = _mapCameraGizmoColor;
+    }
+
     public override string[] _GetConfigurationWarnings()
     {
         List<string> warnings = new();

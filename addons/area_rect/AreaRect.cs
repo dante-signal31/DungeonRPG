@@ -6,20 +6,30 @@ namespace DungeonRPG.addons.area_rect;
 [Tool]
 public partial class AreaRect : Node3D
 {
+    /// <summary>
+    /// Emitted when the area is resized.
+    /// </summary>
+    [Signal] public delegate void AreaRectUpdatedEventHandler(AreaRect sourceAreaRect);
+    
     [ExportCategory("CONFIGURATION")] 
     /// <summary>
     /// <p>Whether width and height should be calculated automatically
     /// depending on an apect ratio.</p>
     /// </summary> 
     [Export] public bool AspectRatioEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Whether the width or the height condition the other one.
+    /// </summary>
+    [Export] public Camera3D.KeepAspectEnum AspectType { get; set; }= Camera3D.KeepAspectEnum.Width;
     
-    /// <summary> This is the width divided by the height. </summary> 
+    /// <summary> This is the width divided by the heigh. </summary> 
     [Export] public float AspectRatio { get; set; }= 1.0f;
 
     private float _width;
     /// <summary>
     /// <p>Width of the area.</p>
-    /// <p>If aspect ratio is enabled, this is the only field you have to set,
+    /// <p>If aspect ratio Height is enabled, this is the only field you have to set,
     /// because height is calculated automatically.</p>
     /// </summary>
     [Export]
@@ -28,15 +38,16 @@ public partial class AreaRect : Node3D
         get => _width;
         set
         {
-            if (!Mathf.IsEqualApprox(_width,value))
+            if (Mathf.IsEqualApprox(_width, value)) return;
+            if (!AspectRatioEnabled) 
+                _width = value;
+            if (AspectRatioEnabled && AspectType == Camera3D.KeepAspectEnum.Height)
             {
                 _width = value;
-                if (AspectRatioEnabled)
-                {
-                    _height = Width / AspectRatio;
-                }
-                UpdateGizmos();
+                _height = _width / AspectRatio;
             }
+            EmitSignal(SignalName.AreaRectUpdated, this);
+            UpdateGizmos();
         }
     }
     
@@ -44,19 +55,23 @@ public partial class AreaRect : Node3D
     /// <summary>
     /// <p>Height of the area.</p>
     /// <p>This field is only used if aspect ratio is not enabled.</p>
-    /// <p>If aspect ratio is enabled, this field value is calculated
-    /// automatically depending on the aspect ratio and the set width.</p>
+    /// <p>If aspect ratio Width is enabled, this is the only field you have to set,
+    /// because width is calculated automatically.</p>
     /// </summary>
     [Export] public float Height {
         get => _height;
         set
         {
-            if (!Mathf.IsEqualApprox(_height,value))
-            {
-                if (AspectRatioEnabled) return;
+            if (Mathf.IsEqualApprox(_height, value)) return;
+            if (!AspectRatioEnabled) 
                 _height = value;
-                UpdateGizmos();
+            if (AspectRatioEnabled && AspectType == Camera3D.KeepAspectEnum.Width)
+            {
+                _height = value;
+                _width = _height * AspectRatio;
             }
+            EmitSignal(SignalName.AreaRectUpdated, this);
+            UpdateGizmos();
         }
     }
 
@@ -71,6 +86,7 @@ public partial class AreaRect : Node3D
             if (_up != value)
             {
                 _up = value;
+                EmitSignal(SignalName.AreaRectUpdated, this);
                 UpdateGizmos();
             }
         }
@@ -87,6 +103,7 @@ public partial class AreaRect : Node3D
             if (_right != value)
             {
                 _right = value;
+                EmitSignal(SignalName.AreaRectUpdated, this);
                 UpdateGizmos();
             }
         }
