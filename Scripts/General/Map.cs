@@ -41,7 +41,8 @@ public partial class Map : Control
         ConfigureMap();
         GetCameraPositionMarker();
         UpdateCamerasConfiguration();
-        // ConfigureDecal();
+        UpdateCameraAreaRect();
+        ConfigureDecal();
     }
 
     private void ConfigureDecal()
@@ -51,11 +52,11 @@ public partial class Map : Control
         _alphaMaskMaterial?.SetShaderParameter("fogColor", _fogColor);
         
         if (_cameraPosition == null) return;
-        _fogOfWarDecal.GlobalPosition = _cameraPosition.GlobalPosition;
+        _fogOfWarDecal.GlobalPosition = _cameraPosition.GlobalPosition with {Y = 0};
         _fogOfWarDecal.Size = new Vector3(
             _mapCameraAreaRect.Width, 
-            _mapCameraAreaRect.Height, 
-            _cameraHeight);
+            _cameraHeight*2,
+            _mapCameraAreaRect.Height);
     }
 
     private void ConfigureMap()

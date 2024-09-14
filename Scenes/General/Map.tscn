@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://b674cdggnri11"]
+[gd_scene load_steps=17 format=3 uid="uid://b674cdggnri11"]
 
 [ext_resource type="Script" path="res://Scripts/General/Map.cs" id="1_wclij"]
+[ext_resource type="Shader" path="res://Shaders/MapAlphaMask.gdshader" id="2_37km6"]
 [ext_resource type="Script" path="res://addons/area_rect/AreaRect.cs" id="2_xi7da"]
 [ext_resource type="Shader" path="res://Shaders/MapMask.gdshader" id="3_akxtv"]
 [ext_resource type="Shader" path="res://Shaders/Map.gdshader" id="3_ywugf"]
@@ -13,7 +14,8 @@ viewport_path = NodePath("SubViewportShapes")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_86g3y"]
 resource_local_to_scene = true
-shader = ExtResource("3_akxtv")
+shader = ExtResource("2_37km6")
+shader_parameter/fogColor = Color(0, 0, 0, 1)
 shader_parameter/shapesTexture = SubResource("ViewportTexture_g75sy")
 
 [sub_resource type="Environment" id="Environment_vulpk"]
@@ -22,6 +24,11 @@ adjustment_brightness = 0.31
 
 [sub_resource type="Environment" id="Environment_5lw5h"]
 background_mode = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kehql"]
+resource_local_to_scene = true
+shader = ExtResource("3_akxtv")
+shader_parameter/shapesTexture = SubResource("ViewportTexture_g75sy")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_flf8q"]
 viewport_path = NodePath("SubViewportMask")
@@ -63,17 +70,22 @@ _mapCameraAreaRect = NodePath("AreaRect")
 _mapSubviewPort = NodePath("SubViewportMap")
 
 [node name="AreaRect" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
 script = ExtResource("2_xi7da")
+AspectType = 1
+AspectRatio = 1.77778
+Width = 80.0
+Height = 45.0
+Up = Vector3(0, -4.37114e-08, -1)
+GizmoColor = Color(0, 1, 0, 1)
 
 [node name="Decal" type="Decal" parent="."]
-process_mode = 4
-visible = false
 layers = 0
+size = Vector3(52.671, 43.158, 29.6274)
 texture_albedo = SubResource("ViewportTexture_6suxc")
 cull_mask = 5
 
 [node name="SubViewportAlphaMask" type="SubViewport" parent="."]
-process_mode = 4
 render_target_clear_mode = 1
 render_target_update_mode = 4
 
@@ -129,7 +141,7 @@ render_target_clear_mode = 1
 render_target_update_mode = 4
 
 [node name="MaskShader" type="ColorRect" parent="SubViewportMask"]
-material = SubResource("ShaderMaterial_86g3y")
+material = SubResource("ShaderMaterial_kehql")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
